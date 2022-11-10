@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">android-sns-project</string>
+    <string name="app_name"></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">search</string>
+    <string name="home">home</string>
+    <string name="notification">notification</string>
+    <string name="user">user</string>
+    <string name="AppName">YouU</string>
+    <string name="posting">posting</string>
 </resources>
