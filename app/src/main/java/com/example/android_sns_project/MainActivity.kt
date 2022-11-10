@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun settingToolBar() {
         supportActionBar?.hide()
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         setSupportActionBar(binding.toolbar)
         // 뒤로가기 버튼 생성
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -71,7 +72,6 @@ class MainActivity : AppCompatActivity() {
 
             // activity 시작하는 법
             // R.id ~~ -> startActivity(Intent(this, NavDrawerActivity::class.java))
-
             else -> return super.onOptionsItemSelected(item)
         }
         return true

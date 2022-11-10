@@ -13,8 +13,11 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
+        <!-- action bar 없애기 -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
+        <!-- 상태바 없애기 -->
+    <!--<item name="android:windowFullscreen">true</item>-->
     </style>
 </resources>
