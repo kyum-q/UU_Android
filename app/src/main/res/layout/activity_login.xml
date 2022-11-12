@@ -62,7 +62,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginBtutton"
-            android:text="@string/login"
+            android:text="@string/sign_in"
             android:textColor="@color/white"
             android:textSize="15dp"
             android:background="@color/main_color"
@@ -74,7 +74,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:text="@string/signin_google"
-            android:textColor="@color/google_color"
+            android:textColor="@color/grey_text"
             android:textSize="10dp"
             android:background="#00ff0000"
             android:drawableStart="@drawable/google_icon"
