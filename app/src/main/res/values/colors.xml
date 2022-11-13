@@ -10,5 +10,8 @@
     <color name="transparent">#00FFFFFF</color>
 
     <color name="main_color">#AD90FF</color>
+    <color name="google_color">#EA4335</color>
+    <color name="error_color">#FF0000</color>
+    <color name="grey_text">#737373</color>
 
 </resources>
