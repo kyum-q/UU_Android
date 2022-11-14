@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         appbarc = AppBarConfiguration(setOf(R.id.fragment))
         //setupActionBarWithNavController(nhf.navController, appbarc)
         binding.bottomNavigationView.setupWithNavController(nhf.navController)
+
+
     }
 
 
