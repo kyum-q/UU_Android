@@ -10,10 +10,10 @@
         android:id="@+id/searchFragment"
         android:icon="@drawable/search_icon"
         android:title="@string/search" />
-    <item
-        android:id="@+id/postingActivity"
-        android:icon="@drawable/posting_select_image"
-        android:title="posting" />
+<!--    <item-->
+<!--        android:id="@+id/postingActivity"-->
+<!--        android:icon="@drawable/posting_select_image"-->
+<!--        android:title="posting" />-->
     <item
         android:id="@+id/notificationFragment"
         android:icon="@drawable/notification_select_image"

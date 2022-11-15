@@ -37,7 +37,6 @@ class UserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentUserBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
 
         // recyclerview setup
         binding!!.recyclerView.layoutManager = GridLayoutManager(activity, 3)
@@ -58,8 +57,7 @@ class UserFragment : Fragment() {
         itemsCollectionRef.get().addOnSuccessListener {
            // var items = mutableListOf<Item>()
             for (doc in it) {
-                val token = doc["imagePath"].toString().split("gs://android-sns-youu.appspot.com/")
-                val ref = rootRef.child(token[1])
+                val ref = rootRef.child( doc["imagePath"].toString())
 
                 ref.getBytes(Long.MAX_VALUE).addOnCompleteListener {
                     if (it.isSuccessful) {

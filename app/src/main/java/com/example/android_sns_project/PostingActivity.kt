@@ -37,6 +37,7 @@ class PostingActivity : AppCompatActivity() {
         const val REQUEST_CODE = 1
         const val UPLOAD_FOLDER = "upload_images/"
     }
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -102,6 +103,8 @@ class PostingActivity : AppCompatActivity() {
                 content.explain = binding.uploadEdit.text.toString()
                 //time
                 content.time = System.currentTimeMillis()
+                // imagePath
+                content.imagePath = "upload_image/"+fileName
 
                 //fireBase-firesotre에 저장
                 db?.collection("content")?.document()?.set(content)

@@ -1,17 +1,17 @@
 package com.example.android_sns_project
 
-import android.content.Intent
+import android.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
 import com.example.android_sns_project.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+
 
 class HomeFragment : Fragment() {
     val db = Firebase.firestore
@@ -29,6 +29,12 @@ class HomeFragment : Fragment() {
                 var context:HomeContent = HomeContent(context, d)
                 //LienarLayout에 커스텀 레이아웃 추가
                 binding?.scrollLayout?.addView(context.getLayout())
+
+                context.getCommentButton().setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putString("id",context.getID())
+                    findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_commendFragment, bundle)
+                }
             }
         }
 
@@ -38,4 +44,6 @@ class HomeFragment : Fragment() {
         return binding?.root
 
     }
+
+
 }
