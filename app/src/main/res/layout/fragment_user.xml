@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UserFragment">
 
 
-        <RelativeLayout
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp">
+            android:layout_height="150dp">
 
             <ImageView
                 android:id="@+id/account_profile"
@@ -31,6 +31,8 @@
                 android:layout_toRightOf="@+id/account_profile"
                 android:text="FOLLOW"
                 />
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,9 +99,17 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </RelativeLayout>
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <!--        <androidx.recyclerview.widget.RecyclerView-->
 <!--            android:id="@+id/account_recyclerView"-->
 <!--            android:layout_width="0dp"-->
 <!--            android:layout_height="0dp"-->

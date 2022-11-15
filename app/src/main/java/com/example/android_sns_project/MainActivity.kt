@@ -1,9 +1,11 @@
 package com.example.android_sns_project
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
@@ -17,10 +19,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         settingToolBar()
 
         // 내부 controller 가져오기
         val nhf = supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
+
+        val postingbtn = binding.postingButton
+
+        postingbtn.setOnClickListener{
+            val intent = Intent(this, PostingActivity::class.java)
+            startActivity(intent)
+        }
 
         // 상단바 설정
         /*
@@ -68,7 +79,8 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId){
             R.id.homeFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
             R.id.searchFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
-            R.id.postingFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
+//            R.id.postingFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
+            R.id.postingActivity -> startActivity(Intent(this, PostingActivity::class.java))
             R.id.notificationFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
             R.id.userFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
 

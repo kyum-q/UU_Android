@@ -30,13 +30,20 @@
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
     <fragment
-        android:id="@+id/postingFragment"
-        android:name="com.example.android_sns_project.PostingFragment"
-        android:label="fragment_posting"
-        tools:layout="@layout/fragment_posting" />
-    <fragment
         android:id="@+id/commendFragment"
         android:name="com.example.android_sns_project.CommendFragment"
         android:label="fragment_commend"
         tools:layout="@layout/fragment_commend" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/postingFragment"-->
+<!--        android:name="com.example.android_sns_project.PostingFragment"-->
+<!--        android:label="fragment_posting"-->
+<!--        tools:layout="@layout/fragment_posting" />-->
+    <activity
+        android:id="@+id/postingActivity"
+        android:name="com.example.android_sns_project.PostingActivity"
+        android:label="activity_post"
+        tools:layout="@layout/activity_post" />
+
 </navigation>
