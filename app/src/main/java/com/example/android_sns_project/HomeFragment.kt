@@ -12,7 +12,6 @@ import com.google.firebase.storage.ktx.storage
 
 class HomeFragment : Fragment() {
     val db = Firebase.firestore
-    val rootRef = Firebase.storage.reference
     private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

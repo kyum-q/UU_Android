@@ -63,37 +63,26 @@
             android:gravity="bottom"
             android:orientation="horizontal">
 
-            <Button
+            <ImageButton
                 android:id="@+id/likeButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="30dp"
-                android:layout_height="25dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="20dp"
                 android:background="@color/transparent"
-                android:includeFontPadding="false"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                app:icon="@drawable/heart_icon"
-                app:iconSize="25dp"
-                app:iconTint="@color/black"
-                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck">
+                android:scaleType="centerCrop"
+                android:src="@drawable/heart_icon"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-            </Button>
-
-            <Button
+            <ImageButton
                 android:id="@+id/commendButton"
-                android:layout_width="30dp"
-                android:layout_height="25dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:background="@color/transparent"
-                android:includeFontPadding="false"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                app:icon="@drawable/comment_icon"
-                app:iconSize="25dp"
-                app:iconTint="@color/black"
+                android:scaleType="centerCrop"
+                android:src="@drawable/comment_icon"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         </LinearLayout>

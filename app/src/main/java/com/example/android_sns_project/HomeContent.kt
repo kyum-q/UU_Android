@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.QueryDocumentSnapshot
@@ -33,7 +34,7 @@ class HomeContent {
         val likeDescription: TextView = customLayout.findViewById<TextView>(R.id.likeDescription)
         likeDescription.text = "${d["likeCount"].toString()}명이 좋아합니다"
 
-        val likeButton: Button = customLayout.findViewById<Button>(R.id.likeButton)
+        val likeButton: ImageButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
         likeButton.setOnClickListener {
             if (i == true){
                 likeButton.setBackgroundColor(R.drawable.heart_click_icon)
