@@ -28,26 +28,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_above="@+id/gotoSignupLayout"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/emailEditText"
+            android:background="@drawable/border_edittext"
+            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="10dp"
             android:hint="@string/email"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textSize="15dp"/>
 
         <EditText
             android:id="@+id/passwordEditText"
+            android:background="@drawable/border_edittext"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="15dp"
             android:hint="@string/password"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textSize="15dp"/>
 
         <TextView
@@ -58,34 +67,52 @@
             android:layout_marginBottom="15dp"
             android:text=""
             android:textColor="@color/error_color"
-            android:textSize="10dp" />
+            android:textSize="12dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginBtutton"
             android:text="@string/sign_in"
             android:textColor="@color/white"
             android:textSize="15dp"
-            android:background="@color/main_color"
+            android:background="@drawable/border_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="300dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/gotoSignupLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:text="계정이 없으신가요?"
+            android:textColor="@color/grey_text"
+            android:textSize="12dp"
+            android:background="#00ff0000"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:text="@string/signin_google"
-            android:textColor="@color/grey_text"
-            android:textSize="10dp"
+            android:id="@+id/gotoSignupButton"
+            android:text="@string/sign_up"
+            android:textColor="@color/main_color"
+            android:textSize="12dp"
+            android:textStyle="bold"
             android:background="#00ff0000"
-            android:drawableStart="@drawable/google_icon"
             android:drawablePadding="5dp"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="250dp" />
-
+            android:layout_height="40dp" />
     </LinearLayout>
 
 </RelativeLayout>
