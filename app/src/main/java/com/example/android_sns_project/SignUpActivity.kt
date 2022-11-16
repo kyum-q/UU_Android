@@ -1,5 +1,6 @@
 package com.example.android_sns_project
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,10 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.util.regex.Pattern
 
@@ -30,6 +28,8 @@ class SignUpActivity : AppCompatActivity() {
 
     val db: FirebaseFirestore = Firebase.firestore
     val usersCollectionRef = db.collection("users") // users Collection ID
+
+    var result = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,37 +114,48 @@ class SignUpActivity : AppCompatActivity() {
 
         val signUpButton : Button = findViewById(R.id.signUpBtutton)
         signUpButton.setOnClickListener {
+
+            //Log.v("test log", "4result" + result)
             if(emailEditText.toString().trim().isEmpty() || nameEditText.toString().trim().isEmpty() || usernameEditText.toString().trim().isEmpty()
                 || passwordEditText.toString().trim().isEmpty() || passwordCheckEditText.toString().trim().isEmpty()){
                 Toast.makeText(this, "입력하지 않은 부분이 있습니다.", Toast.LENGTH_SHORT).show()
             }
-            else if(!(passwordEditText.text.toString().equals(passwordCheckEditText.text.toString())))
+            else if(!(passwordEditText.text.toString().equals(passwordCheckEditText.text.toString()))) {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-            else if( emailOverlapCheck(emailEditText.text.toString()) ) {// 이메일 중복되는지 확인
-                Toast.makeText(this, "이메일 주소가 중복 되었습니다.", Toast.LENGTH_SHORT).show()
             }
-            else
-                signUp(emailEditText.text.toString(),passwordEditText.text.toString())
+//            else if( emailOverlapCheck(emailEditText.text.toString())) {// 이메일 중복되는지 확인
+//                Toast.makeText(this, "이메일 주소가 중복 되었습니다.", Toast.LENGTH_SHORT).show()
+//            }
+            else {
+                signUp(emailEditText.text.toString(), passwordEditText.text.toString())
+            }
         }
 
     }
 
     // 이메일 중복 체크
-    fun emailOverlapCheck(email: String) :Boolean {
-        var result = false
-        // 입력한 이메일이 있는지 확인 쿼리
-
-        usersCollectionRef.whereEqualTo("email", email).get()
-            .addOnCompleteListener {
-                //중복된 값이 있을 경우
-                Toast.makeText(this, "확인용 : 이메일 중복", Toast.LENGTH_SHORT).show()
-                Log.v("test log", "1result" + result)
-                result = true
-                Log.v("test log", "2result" + result)
-            }
-        Log.v("test log", "3result" + result)
-        return result
-    }
+//    suspend fun emailOverlapCheck(email: String): Boolean {
+//
+//        // 입력한 이메일이 있는지 확인 쿼리
+//        result = withContext(Dispatchers.IO){
+//            launch {
+//                usersCollectionRef.whereEqualTo("email", email).get()
+//                    .addOnCompleteListener {
+//                        //중복된 값이 있을 경우
+//                        //Toast.makeText(this, "확인용 : 이메일 중복", Toast.LENGTH_SHORT).show()
+//                        Log.v("test log", "1result" + result)
+//                        result = true
+//                        Log.v("test log", "2result" + result)
+//                    }
+//            }
+//
+//            launch {
+//                Log.v("test log", "3result" + result)
+//
+//            }
+//            result
+//        }
+//    }
 
     // 이메일 검사
     private fun checkEmail() : Boolean{
@@ -187,9 +198,11 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // 아이디 생성이 완료되었을 때
                     val user = Firebase.auth.getCurrentUser()
-
+                    val nextIntent = Intent(this, LoginActivity::class.java)
+                    startActivity(nextIntent)
+                    Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
                 } else { // 아이디 생성이 실패했을 경우
-                    Toast.makeText(this, "아이디 생성 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "회원가입 실패", Toast.LENGTH_SHORT).show()
                 }
             }
     }
