@@ -5,21 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.android_sns_project.databinding.FragmentCommendBinding
+import com.example.android_sns_project.databinding.FragmentCommentBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class CommendFragment : Fragment() {
-    private var binding: FragmentCommendBinding? = null
+class CommentFragment : Fragment() {
+    private var binding: FragmentCommentBinding? = null
     val db = Firebase.firestore
-    private var userID: String = "jeungsic"
+    private var userID: String = "jeungsig"
 
     lateinit var customLayout: View
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
-        binding = FragmentCommendBinding.inflate(inflater, container, false)
+        binding = FragmentCommentBinding.inflate(inflater, container, false)
         val ID = arguments?.getString("id").toString()
 
         // 해당 레퍼런스 가져오기
@@ -29,12 +29,10 @@ class CommendFragment : Fragment() {
             binding?.userId?.setText(it["userId"].toString())
             binding?.explain?.setText(it["explain"].toString())
 
-            var comments: ArrayList<String> = ArrayList()
-
             val commendMd = md.collection("comments")
             commendMd.get().addOnSuccessListener {
                 for (d in it) {
-                    var comment: HomeComment = HomeComment(context, d["comment_id"].toString(), d["comment"].toString())
+                    var comment: HomeComment = HomeComment(context, d["commentID"].toString(), d["commentText"].toString())
                     //LienarLayout에 커스텀 레이아웃 추가
                     binding?.commentsLayout?.addView(comment.getLayout())
                 }
@@ -42,8 +40,19 @@ class CommendFragment : Fragment() {
         }
 
         binding?.commentAddButton?.setOnClickListener {
-            var comment: HomeComment = HomeComment(context, userID,
-                binding?.editText?.text.toString())
+            val commentText = binding?.editText?.text.toString()
+
+
+            val commentMd = md.collection("comments")
+            commentMd.get().addOnSuccessListener {
+                var commentMap = hashMapOf(
+                    "commentID" to userID,
+                    "commentText" to commentText
+                )
+                commentMd.document().set(commentMap)
+            }
+
+            var comment: HomeComment = HomeComment(context, userID,commentText)
             binding?.commentsLayout?.addView(comment.getLayout())
             binding?.editText?.setText(" ")
         }

@@ -11,8 +11,8 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_commendFragment"
-            app:destination="@id/commendFragment" />
+            android:id="@+id/action_homeFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -29,13 +29,8 @@
         android:name="com.example.android_sns_project.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
-    <fragment
-        android:id="@+id/commendFragment"
-        android:name="com.example.android_sns_project.CommendFragment"
-        android:label="fragment_commend"
-        tools:layout="@layout/fragment_commend" />
 
-<!--    <fragment-->
+    <!--    <fragment-->
 <!--        android:id="@+id/postingFragment"-->
 <!--        android:name="com.example.android_sns_project.PostingFragment"-->
 <!--        android:label="fragment_posting"-->
@@ -45,5 +40,10 @@
         android:name="com.example.android_sns_project.PostingActivity"
         android:label="activity_post"
         tools:layout="@layout/activity_post" />
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="com.example.android_sns_project.CommentFragment"
+        android:label="fragment_comment"
+        tools:layout="@layout/fragment_comment" />
 
 </navigation>

@@ -16,9 +16,9 @@ class HomeComment {
 
     lateinit var customLayout: View
     @SuppressLint("SetTextI18n", "InflateParams")
-    constructor(context: Context?, commendID:String, commendText:String)  {
+    constructor(context: Context?, AddCommentID:String, AddCommentText:String)  {
 
-        val userID = commendID //d["comment_id"].toString()
+        val userID = AddCommentID //d["comment_id"].toString()
 
         //추가할 커스텀 레이아웃 가져오기
         val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -28,7 +28,7 @@ class HomeComment {
         val commentID: TextView = customLayout.findViewById<TextView>(R.id.comment_id)
         commentID.text =userID
         val commentText: TextView = customLayout.findViewById<TextView>(R.id.comment_text)
-        commentText.text = commendText//d["comment"].toString()
+        commentText.text = AddCommentText//d["comment"].toString()
     }
 
     public fun getLayout(): View {

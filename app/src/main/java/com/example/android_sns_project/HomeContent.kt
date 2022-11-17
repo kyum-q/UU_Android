@@ -5,11 +5,9 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -23,7 +21,7 @@ class HomeContent {
     var id:String = ""
     var userID:String = "kyun_q"
     var likeClick: Boolean = false
-    var commendButton: ImageButton
+    private var commentButton: ImageButton
     @SuppressLint("SetTextI18n", "InflateParams")
     constructor(context: Context?, d: QueryDocumentSnapshot)  {
 
@@ -68,7 +66,7 @@ class HomeContent {
             }
         }
 
-        commendButton = customLayout.findViewById<ImageButton>(R.id.commendButton)
+        commentButton = customLayout.findViewById<ImageButton>(R.id.commentButton)
 
         // 이미지 알아내기
         getImage(d["imagePath"].toString())
@@ -91,7 +89,7 @@ class HomeContent {
     }
 
     public fun getCommentButton(): ImageButton {
-        return commendButton
+        return commentButton
     }
 
     public fun getID() : String {
