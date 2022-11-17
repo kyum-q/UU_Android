@@ -2,12 +2,15 @@ package com.example.android_sns_project
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_sns_project.data.Content
 import com.example.android_sns_project.databinding.ContentItemBinding
@@ -18,6 +21,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class UserFragment : Fragment() {
@@ -42,7 +48,7 @@ class UserFragment : Fragment() {
         binding = FragmentUserBinding.inflate(inflater, container, false)
 
         // recyclerview setup
-        binding!!.recyclerView.layoutManager = GridLayoutManager(activity, 3)
+        binding!!.recyclerView.layoutManager = GridLayoutManager(activity,3)
         adapter = UserFragmentAdapter()
 //        adapter?.setOnItemClickListener {
 //            //updateList()
@@ -54,57 +60,66 @@ class UserFragment : Fragment() {
        // updateList()
         return binding?.root
     }
-    inner class MyViewHolder(val binding: ContentItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class MyViewHolder(var imageView: ImageView) : RecyclerView.ViewHolder(imageView)
 
     inner class UserFragmentAdapter : RecyclerView.Adapter<MyViewHolder>(){
-        var contents : ArrayList<Content> = arrayListOf()
-        var items = ArrayList<Item>()
         private val itemsCollectionRef = db.collection("content")
+        var contents : ArrayList<Content> = arrayListOf()
+        var items : ArrayList<Item> = arrayListOf()
+
         init {
             //content collect에 접근
             itemsCollectionRef!!.addSnapshotListener {snapshot, error ->
                 // var items = mutableListOf<Item>()
                 if(snapshot == null) return@addSnapshotListener
 
-                for(snapshot in snapshot.documents){
-                    contents.add(snapshot.toObject(Content::class.java)!!)
-                    for (content in contents) {
-                        val ref = rootRef.child(content.imagePath.toString())
+          //      CoroutineScope(Dispatchers.Main).launch {
+                    for(snapshot in snapshot.documents) {
+                        contents.add(snapshot.toObject(Content::class.java)!!)
+                        Log.d("TAG","전 ${contents.size}")
 
-                        ref.getBytes(Long.MAX_VALUE).addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                val bmp = BitmapFactory.decodeByteArray(it.result, 0, it.result!!.size)
-                                //imgView?.setImageBitmap(bmp)
-                                items.add(Item(content, bmp))
-
-                            }
-                        }
+                        notifyDataSetChanged()
+                        Log.d("TAG","후 ${contents.size}")
                     }
-                }
-                notifyDataSetChanged()
 
-
+             //   }
                 //adapter?.updateList(items)
             }
+
         }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val inflater = LayoutInflater.from(parent.context)
-            val binding = ContentItemBinding.inflate(inflater, parent, false)
+            val binding =ContentItemBinding.inflate(inflater, parent, false)
             var width = resources.displayMetrics.widthPixels/3
-            binding.imageView.layoutParams = LinearLayoutCompat.LayoutParams(width,width)
-            return MyViewHolder(binding)
+            var imageView = ImageView(parent.context)
+            imageView.layoutParams = LinearLayoutCompat.LayoutParams(width,width)
+            return MyViewHolder(imageView)
+            Log.d("TAG","onCreateViewHolder ${contents.size}")
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            if(items.isEmpty()) return
+            if(contents.isEmpty()) return
+            var imageView =(holder as MyViewHolder).imageView
+            Log.d("TAG","onBindViewHolder ${contents.size}")
+          //  for (content in contents) {
+                val ref = rootRef.child(contents[position].imagePath.toString())
 
+                ref.getBytes(Long.MAX_VALUE).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val bmp = BitmapFactory.decodeByteArray(it.result, 0, it.result!!.size)
+                        imageView.setImageBitmap(bmp)
+                        //imgView?.setImageBitmap(bmp)
+                       // items?.add(Item(content, bmp))
 
-            val item = items[position]
-            holder.binding.imageView.setImageBitmap(item.bmp)
+                    }
+                }
+          //  }
+          //  val item = items[position]
+            //imageView.setImageBitmap(item.bmp)
         }
 
         override fun getItemCount(): Int {
-            return items.size
+            return contents.size
         }
     }
     private fun updateList() {

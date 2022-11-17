@@ -2,37 +2,40 @@ package com.example.android_sns_project
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.renderscript.ScriptGroup.Binding
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.android_sns_project.data.Content
-import com.example.android_sns_project.databinding.ActivityMainBinding
 import com.example.android_sns_project.databinding.ActivityPostBinding
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
+import java.io.FileNotFoundException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class PostingActivity : AppCompatActivity() {
 
     var photoUri : Uri? = null
+    var photoBitmap: Bitmap? = null
     private lateinit var binding: ActivityPostBinding
     lateinit var storage : FirebaseStorage
     private val db: FirebaseFirestore = Firebase.firestore
+    var resizeBitmap: Bitmap? = null
+
+    var options = BitmapFactory.Options()
     companion object {
         const val REQUEST_CODE = 1
         const val UPLOAD_FOLDER = "upload_images/"
@@ -60,18 +63,74 @@ class PostingActivity : AppCompatActivity() {
         //uploadDialog()
     }
 
+    private fun resize(context: Context, uri: Uri, resize: Int): Bitmap? {
+        var resizeBitmap: Bitmap? = null
+        val deviceWidth = resources.displayMetrics.widthPixels
+        val deviceHeight = resources.displayMetrics.heightPixels
+        val options = BitmapFactory.Options()
+        try {
+            BitmapFactory.decodeStream(
+                context.getContentResolver().openInputStream(uri),
+                null,
+                options
+            ) // 1번
 
+
+//            if(options.outWidth > options.outHeight)
+//                options.outWidth = options.outHeight
+//            else
+//                options.outHeight = options.outWidth
+            var width = options.outWidth
+            var height = options.outHeight
+            var samplesize = 1
+//            while (true) { //2번
+//                if (width / 2 < resize || height / 2 < resize) break
+//                width /= 2
+//                height /= 2
+//                samplesize *= 2
+//            }
+            options.inSampleSize = samplesize
+            val bitmap = BitmapFactory.decodeStream(
+                context.getContentResolver().openInputStream(uri),
+                null,
+                options
+            ) //3번
+            // 디바이스 가로 비율에 맞춘 세로 크기
+            //val scaleHeight = deviceWidth * width/ height
+            val scaleHeight =  width
+
+            // 비트 맵의 가로 세로 비율 조정
+            resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, scaleHeight, true)
+
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+        return resizeBitmap
+    }
+
+    /*Bitmap to Uri*/
+    private fun getImageUri(context: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            MediaStore.Images.Media.insertImage(context.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
     //갤러리에서 돌아올 때
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 0){
             if(resultCode == Activity.RESULT_OK){
                 photoUri = data?.data
-                binding.photoView.setImageURI(photoUri)
+                photoBitmap= resize(this, photoUri!!, 1000)
+
+                binding.photoView.setImageBitmap(photoBitmap)
             }else{
                 finish()
             }
         }
+
+
     }
     //사진뷰 다시누르면 갤러리로 다시 가서 선택
     fun photoSelect(){
@@ -88,7 +147,7 @@ class PostingActivity : AppCompatActivity() {
         val storageRef = storage.reference
         val imageRef = storageRef.child("upload_image")?.child(fileName)
 
-        imageRef?.putFile(photoUri!!)?.addOnSuccessListener {
+        imageRef?.putFile(getImageUri(this, photoBitmap!!)!!)?.addOnSuccessListener {
             //Snackbar.make(binding.root, "upload completed.", Snackbar.LENGTH_SHORT).show()
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                //게시물 데이터 객체
