@@ -11,10 +11,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android_sns_project.data.Content
 import com.example.android_sns_project.databinding.ActivityPostBinding
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,8 +36,9 @@ class PostingActivity : AppCompatActivity() {
     lateinit var storage : FirebaseStorage
     private val db: FirebaseFirestore = Firebase.firestore
     var resizeBitmap: Bitmap? = null
-
     var options = BitmapFactory.Options()
+    var nickname : String =""
+
     companion object {
         const val REQUEST_CODE = 1
         const val UPLOAD_FOLDER = "upload_images/"
@@ -47,6 +50,9 @@ class PostingActivity : AppCompatActivity() {
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+//        nickname = intent.extras("loginUser")
+//        Log.v("test log",nickname)
         //FireBase.auth.currentUser ? : finish()
         storage = Firebase.storage;
 
@@ -65,6 +71,7 @@ class PostingActivity : AppCompatActivity() {
 
     private fun resize(context: Context, uri: Uri, resize: Int): Bitmap? {
         var resizeBitmap: Bitmap? = null
+        var bitmap : Bitmap? = null
         val deviceWidth = resources.displayMetrics.widthPixels
         val deviceHeight = resources.displayMetrics.heightPixels
         val options = BitmapFactory.Options()
@@ -83,24 +90,25 @@ class PostingActivity : AppCompatActivity() {
             var width = options.outWidth
             var height = options.outHeight
             var samplesize = 1
-//            while (true) { //2번
-//                if (width / 2 < resize || height / 2 < resize) break
-//                width /= 2
-//                height /= 2
-//                samplesize *= 2
-//            }
+            //사진 용량 줄이는 코드
+            while (true) { //2번
+                if (width / 2 < resize || height / 2 < resize) break
+                width /= 2
+                height /= 2
+                samplesize *= 2
+            }
             options.inSampleSize = samplesize
-            val bitmap = BitmapFactory.decodeStream(
+            bitmap =  BitmapFactory.decodeStream(
                 context.getContentResolver().openInputStream(uri),
                 null,
                 options
-            ) //3번
+            )//3번
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height
             val scaleHeight =  width
-
+            resizeBitmap = Bitmap.createBitmap(bitmap!!,0, height / 4 , width, width )
             // 비트 맵의 가로 세로 비율 조정
-            resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, scaleHeight, true)
+           // resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, scaleHeight, true)
 
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
@@ -153,7 +161,8 @@ class PostingActivity : AppCompatActivity() {
                //게시물 데이터 객체
                 var content = Content()
                 //uid
-               // content.uid = auth?.currentUser?.uid
+                content.uid = Firebase.auth.currentUser?.uid
+                Log.v("test log", content.uid!!)
                 //userId
                 //content.userId = auth?.currentUser?.email
                 //imageUri
