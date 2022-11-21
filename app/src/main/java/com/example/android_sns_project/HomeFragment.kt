@@ -1,12 +1,10 @@
 package com.example.android_sns_project
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import com.example.android_sns_project.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.ktx.firestore

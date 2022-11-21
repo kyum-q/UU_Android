@@ -1,5 +1,6 @@
 package com.example.android_sns_project
 
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -62,9 +64,11 @@ class UserFragment : Fragment() {
     }
     inner class MyViewHolder(var imageView: ImageView) : RecyclerView.ViewHolder(imageView)
 
+    @SuppressLint("SuspiciousIndentation")
     inner class UserFragmentAdapter : RecyclerView.Adapter<MyViewHolder>(){
         private val itemsCollectionRef = db.collection("content")
         var contents : ArrayList<Content> = arrayListOf()
+        var contentsID : ArrayList<String> = arrayListOf()
         var items : ArrayList<Item> = arrayListOf()
 
         init {
@@ -76,6 +80,7 @@ class UserFragment : Fragment() {
           //      CoroutineScope(Dispatchers.Main).launch {
                     for(snapshot in snapshot.documents) {
                         contents.add(snapshot.toObject(Content::class.java)!!)
+                        contentsID.add(snapshot.id)
                         Log.d("TAG","전 ${contents.size}")
 
                         notifyDataSetChanged()
@@ -93,6 +98,7 @@ class UserFragment : Fragment() {
             var width = resources.displayMetrics.widthPixels/3
             var imageView = ImageView(parent.context)
             imageView.layoutParams = LinearLayoutCompat.LayoutParams(width,width)
+
             return MyViewHolder(imageView)
             Log.d("TAG","onCreateViewHolder ${contents.size}")
         }
@@ -111,6 +117,11 @@ class UserFragment : Fragment() {
                         //imgView?.setImageBitmap(bmp)
                        // items?.add(Item(content, bmp))
 
+                        imageView.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("id",contentsID[position])
+                            findNavController().navigate(com.example.android_sns_project.R.id.action_userFragment_to_myContentFragment, bundle)
+                        }
                     }
                 }
           //  }

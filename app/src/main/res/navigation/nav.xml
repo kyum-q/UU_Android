@@ -24,7 +24,11 @@
         android:id="@+id/userFragment"
         android:name="com.example.android_sns_project.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_myContentFragment"
+            app:destination="@id/myContentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.android_sns_project.NotificationFragment"
@@ -45,11 +49,15 @@
         android:id="@+id/commentFragment"
         android:name="com.example.android_sns_project.CommentFragment"
         android:label="fragment_comment"
-        tools:layout="@layout/fragment_comment" >
+        tools:layout="@layout/fragment_comment" />
+    <fragment
+        android:id="@+id/myContentFragment"
+        android:name="com.example.android_sns_project.MyContentFragment"
+        android:label="fragment_my_content"
+        tools:layout="@layout/fragment_my_content" >
         <action
-            android:id="@+id/action_commentFragment_to_homeFragment2"
-            app:destination="@id/homeFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_myContentFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
 
 </navigation>
