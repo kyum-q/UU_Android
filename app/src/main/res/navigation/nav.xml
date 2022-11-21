@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_commentFragment"
-            app:destination="@id/commentFragment" />
+            app:destination="@id/commentFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -44,6 +45,11 @@
         android:id="@+id/commentFragment"
         android:name="com.example.android_sns_project.CommentFragment"
         android:label="fragment_comment"
-        tools:layout="@layout/fragment_comment" />
+        tools:layout="@layout/fragment_comment" >
+        <action
+            android:id="@+id/action_commentFragment_to_homeFragment2"
+            app:destination="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

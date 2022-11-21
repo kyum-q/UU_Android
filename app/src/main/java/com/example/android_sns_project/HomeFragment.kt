@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
                     val bundle = Bundle()
                     bundle.putString("id",context.getID())
                     findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_commentFragment, bundle)
+
                 }
             }
         }
