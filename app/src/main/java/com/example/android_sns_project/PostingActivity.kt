@@ -92,11 +92,11 @@ class PostingActivity : AppCompatActivity() {
                 samplesize *= 2
             }
             options.inSampleSize = samplesize
-            bitmap = BitmapFactory.decodeStream(
-                context.getContentResolver().openI0nputStream(uri),
+            bitmap =BitmapFactory.decodeStream(
+                context.getContentResolver().openInputStream(uri),
                 null,
                 options
-            ) //3번
+            )  //3번
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height
             val scaleHeight =  width
