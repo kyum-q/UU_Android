@@ -65,6 +65,7 @@ class PostingActivity : AppCompatActivity() {
 
     private fun resize(context: Context, uri: Uri, resize: Int): Bitmap? {
         var resizeBitmap: Bitmap? = null
+        var bitmap : Bitmap? = null
         val deviceWidth = resources.displayMetrics.widthPixels
         val deviceHeight = resources.displayMetrics.heightPixels
         val options = BitmapFactory.Options()
@@ -83,24 +84,25 @@ class PostingActivity : AppCompatActivity() {
             var width = options.outWidth
             var height = options.outHeight
             var samplesize = 1
-//            while (true) { //2번
-//                if (width / 2 < resize || height / 2 < resize) break
-//                width /= 2
-//                height /= 2
-//                samplesize *= 2
-//            }
+            //사진 용량 줄이는 코드
+            while (true) { //2번
+                if (width / 2 < resize || height / 2 < resize) break
+                width /= 2
+                height /= 2
+                samplesize *= 2
+            }
             options.inSampleSize = samplesize
-            val bitmap = BitmapFactory.decodeStream(
-                context.getContentResolver().openInputStream(uri),
+            bitmap = BitmapFactory.decodeStream(
+                context.getContentResolver().openI0nputStream(uri),
                 null,
                 options
             ) //3번
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height
             val scaleHeight =  width
-
+            resizeBitmap = Bitmap.createBitmap(bitmap!!,0, height / 4 , width, width )
             // 비트 맵의 가로 세로 비율 조정
-            resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, scaleHeight, true)
+           // resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, scaleHeight, true)
 
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
