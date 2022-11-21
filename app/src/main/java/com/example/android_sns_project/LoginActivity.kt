@@ -161,7 +161,7 @@ class LoginActivity : AppCompatActivity() {
     // 메인 액티비티로 이동
     private fun moveMainPage (user: FirebaseUser?){
         if(user != null){
-            var intent = Intent(this, PostingActivity::class.java)
+            var intent = Intent(this, MainActivity::class.java)
             intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
