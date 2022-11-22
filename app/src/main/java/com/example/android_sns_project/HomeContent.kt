@@ -3,6 +3,7 @@ package com.example.android_sns_project
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
@@ -43,6 +44,11 @@ class HomeContent {
         likeDescription.text = "${d["likeCount"].toString()}명이 좋아합니다"
 
         val likeButton: ImageButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
+        var userImage : ImageView = customLayout.findViewById<ImageView>(R.id.userImage)
+        userImage.setOnClickListener{
+            MainActivity().changeFragment( d["email"].toString())
+
+        }
 
         val likeMd = db.collection("content").document(id).collection("likes")
         likeMd.get().addOnSuccessListener {

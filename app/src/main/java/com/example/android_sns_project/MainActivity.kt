@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
@@ -66,6 +67,16 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.findFragmentById(R.id.userFragment)?.
         onActivityResult(requestCode,resultCode,data)
     }
+
+    //메인에서 유저 이미지 누르면 해당 유저로 가는 액티비티 전환
+    fun changeFragment(data : String){
+        var userFragment = UserFragment()
+        var mainActivityView = MainActivity()
+        var bundle = Bundle()
+        bundle.putString("userId",data)
+        userFragment.arguments = bundle
+        supportFragmentManager.beginTransaction().replace(R.id.fragment ,userFragment).commit()
+    }
     // up button 처리하는 함수
     /*
     override fun onSupportNavigateUp(): Boolean {
@@ -103,4 +114,8 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+
 }
+
+
+
