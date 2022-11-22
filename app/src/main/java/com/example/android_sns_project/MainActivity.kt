@@ -3,23 +3,26 @@ package com.example.android_sns_project
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.example.android_sns_project.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.core.UserWriteRecord
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appbarc: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    var userFragment : UserFragment? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
         settingToolBar()
 
@@ -56,7 +59,13 @@ class MainActivity : AppCompatActivity() {
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-
+    @Override
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("IMAGETEST", requestCode.toString())
+        supportFragmentManager.findFragmentById(R.id.userFragment)?.
+        onActivityResult(requestCode,resultCode,data)
+    }
     // up button 처리하는 함수
     /*
     override fun onSupportNavigateUp(): Boolean {
@@ -82,7 +91,10 @@ class MainActivity : AppCompatActivity() {
 //            R.id.postingFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
             R.id.postingActivity -> startActivity(Intent(this, PostingActivity::class.java))
             R.id.notificationFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
-            R.id.userFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
+            R.id.userFragment -> {
+
+                item.onNavDestinationSelected(findNavController(R.id.fragment))
+            }
 
             // activity 시작하는 법
             // R.id ~~ -> startActivity(Intent(this, NavDrawerActivity::class.java))
