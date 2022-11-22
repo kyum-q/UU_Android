@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android_sns_project.OtherUserFragment.UserFragmentAdapter
 import com.example.android_sns_project.data.Content
 import com.example.android_sns_project.data.UserInfo
 import com.example.android_sns_project.databinding.ContentItemBinding
@@ -72,9 +73,8 @@ class UserFragment : Fragment() {
         adapter = UserFragmentAdapter()
         currentUserId = auth?.currentUser?.email
         userId = arguments?.getString("userId")
+
         Log.d("follow", "다른UserId : ${userId}")
-
-
 
         db.collection("UserInfo")?.whereEqualTo("email", auth?.currentUser?.email)
             ?.addSnapshotListener { snapshot, error ->
@@ -92,7 +92,6 @@ class UserFragment : Fragment() {
                 //   }
                 //adapter?.updateList(items)
             }
-
 
         //프로필 사진 바꾸는 이벤트
         binding!!.accountProfile.setOnClickListener {
@@ -118,24 +117,21 @@ class UserFragment : Fragment() {
                 Log.d("follow", snapshot.toString())
                 if (snapshot == null) return@addSnapshotListener
 
-                //
-                for (snapshot in snapshot.documents) {
-                    userInfo = snapshot.toObject(UserInfo::class.java)
-                    id = snapshot.id
-                    //이미 목록에 존재하면
-                    if (userInfo?.followings?.containsKey(userId) == true) {
-                        userInfo?.followingCount = userInfo?.followingCount!! - 1
-                        userInfo?.followers!!.remove(userId)
-                    } else {
-                        userInfo?.followingCount = userInfo?.followingCount!! + 1
-                        userInfo?.followers!![userId!!] = true
+
+                fun follwerUpdate() {
+                    var user_db = db.collection("UserInfo")?.document(auth?.currentUser?.email!!)
+                    Log.d("follow", "follow() ${userId}")
+                    user_db?.addSnapshotListener { snapshot, error ->
+                        if (snapshot == null) return@addSnapshotListener
+                        var user = snapshot.toObject(UserInfo::class.java)
+
+                        if (user?.followerCount != null) {
+                            binding!!.followerCount.text = user.followerCount.toString()
+
+                        }
                     }
 
-                    // db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
-                    db?.collection("content")?.document(id!!)?.set(userInfo!!)
 
-                    //   }
-                    //adapter?.updateList(items)
                 }
             }
     }
