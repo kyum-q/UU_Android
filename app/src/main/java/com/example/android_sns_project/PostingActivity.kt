@@ -91,15 +91,19 @@ class PostingActivity : AppCompatActivity() {
 //                options.outHeight = options.outWidth
             var width = options.outWidth
             if (bitmap != null) {
-                if(width >= bitmap.width)
+                if(width >= bitmap.width){
                     width = bitmap.width
-                 options.outWidth=width
+                    options.outWidth=width
+                }
+
             }
             var height = options.outHeight
             if (bitmap != null) {
-                if(height >= bitmap.height)
+                if(height >= bitmap.height){
                     height = bitmap.height
-                options.outHeight =height
+                    options.outHeight =height
+                }
+
             }
             var samplesize = 1
             //사진 용량 줄이는 코드

@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_sns_project.data.Content
+import com.example.android_sns_project.data.UserInfo
 import com.example.android_sns_project.databinding.ContentItemBinding
 import com.example.android_sns_project.databinding.FragmentUserBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -43,12 +44,14 @@ class UserFragment : Fragment() {
     private val itemsCollectionRef = db.collection("content")
     private var binding: FragmentUserBinding? = null
     var items = mutableListOf<Item>()
-    var uid:String? = null
+
+    var currentUserId : String? = null
     var auth : FirebaseAuth? = null
 
     val database = Firebase.database
     var roofRef2 = Firebase.database.reference
-
+    var userInfo :UserInfo? = null
+    var userId : String?= null
 
     //실시간 변경 데이터 추적
     private var snapshotListener: ListenerRegistration? = null
@@ -67,35 +70,30 @@ class UserFragment : Fragment() {
         // recyclerview setup
         binding!!.recyclerView.layoutManager = GridLayoutManager(activity,3)
         adapter = UserFragmentAdapter()
+        currentUserId = auth?.currentUser?.email
+        userId = arguments?.getString("userId")
+        Log.d("follow","다른UserId : ${userId}")
 
-        Log.d("User",auth?.currentUser?.email.toString() )
 
-        roofRef2.child("Users").orderByChild("email").
-        equalTo(auth?.currentUser?.email).addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //snapshot에 쿼리문에 맞는 Users 배열이 들어옴
-                for (snapshot in dataSnapshot.children) {
-                    Log.d("User", "ValueEventListener : " + snapshot.value)
+
+        db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
+            ?.addSnapshotListener { snapshot, error ->
+                // var items = mutableListOf<Item>()
+                Log.d("follow", snapshot.toString())
+                if(snapshot == null) return@addSnapshotListener
+//                snapshot.toSet()
+                //      CoroutineScope(Dispatchers.Main).launch {
+                for(snapshot in snapshot.documents) {
+                    userInfo = snapshot.toObject(UserInfo::class.java)
+                    binding!!.followerCount.text = userInfo?.followerCount.toString()
+                    binding!!.followingCount.text = userInfo?.followingCount.toString()
                 }
+
+                //   }
+                //adapter?.updateList(items)
             }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-//            Log.d("User",it.value.toString() )
-//            binding!!.followerCount.text= it.value.toString()
-//        }.addOnFailureListener {
-//            Log.d("User","Filed" )
-//            // ...
-//        }
-//        // 데이터베이스 읽기 #1. ValueEventListener
-//        FirebaseDatabase.getInstance().reference.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (snapshot in dataSnapshot.children) {
-//                    Log.d("MainActivity", "ValueEventListener : " + snapshot.value)
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {}
-//        })
+
+
         //프로필 사진 바꾸는 이벤트
         binding!!.accountProfile.setOnClickListener{
             var photoIntent = Intent(Intent.ACTION_PICK)
@@ -105,17 +103,35 @@ class UserFragment : Fragment() {
                 PostingActivity.REQUEST_CODE
             )
         }
-//        adapter?.setOnItemClickListener {
-//            //updateList()
-//        }
-//        binding!!.accountBtnFollow.setOnClickListener{
-//            updateList()
-//        }
-
 
         binding!!.recyclerView.adapter = adapter
        // updateList()
         return binding?.root
+    }
+
+    fun follow(){
+        var id :String? =null
+        db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
+            ?.addSnapshotListener { snapshot, error ->
+                // var items = mutableListOf<Item>()
+                Log.d("follow", snapshot.toString())
+                if(snapshot == null) return@addSnapshotListener
+
+                //
+                for(snapshot in snapshot.documents) {
+                    userInfo = snapshot.toObject(UserInfo::class.java)
+                    id = snapshot.id
+                    //이미 목록에 존재하면
+                    if(userInfo?.followings?.containsKey(userId) == true){
+                        userInfo?.followingCount = userInfo?.followingCount!! - 1
+                    }else{
+
+                    }
+
+
+                //   }
+                //adapter?.updateList(items)
+            }
     }
 
     //갤러리에서 돌아올 때
@@ -145,7 +161,7 @@ class UserFragment : Fragment() {
 
         init {
             //content collect에 접근
-            itemsCollectionRef?.whereEqualTo("uid",auth?.currentUser?.uid)
+            itemsCollectionRef?.whereEqualTo("userId",auth?.currentUser?.email)
                 ?.addSnapshotListener { snapshot, error ->
                     // var items = mutableListOf<Item>()
                     if(snapshot == null) return@addSnapshotListener
