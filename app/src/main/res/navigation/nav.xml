@@ -8,23 +8,23 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.android_sns_project.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_commentFragment"
             app:destination="@id/commentFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.android_sns_project.SearchFragment"
-        android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.android_sns_project.UserFragment"
-        android:label="fragment_user"
-        tools:layout="@layout/fragment_user" >
+        tools:layout="@layout/fragment_user">
         <action
             android:id="@+id/action_userFragment_to_myContentFragment"
             app:destination="@id/myContentFragment" />
@@ -32,7 +32,6 @@
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.android_sns_project.NotificationFragment"
-        android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
 
     <!--    <fragment-->
@@ -48,7 +47,6 @@
     <fragment
         android:id="@+id/commentFragment"
         android:name="com.example.android_sns_project.CommentFragment"
-        android:label="fragment_comment"
         tools:layout="@layout/fragment_comment" />
     <fragment
         android:id="@+id/myContentFragment"
@@ -59,5 +57,9 @@
             android:id="@+id/action_myContentFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/otherUserFragment"
+        android:name="com.example.android_sns_project.OtherUserFragment"
+        tools:layout="@layout/fragment_other_user" />
 
 </navigation>

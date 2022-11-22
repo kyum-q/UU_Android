@@ -48,7 +48,12 @@ class MainActivity : AppCompatActivity() {
         //setupActionBarWithNavController(nhf.navController, appbarc)
         binding.bottomNavigationView.setupWithNavController(nhf.navController)
 
-
+        //bottom navigation의 fragment를 루트 최상위로
+        //bottom navigation 변환에도 업 버튼이 출력되지 않기 위해 사용
+        val appBarConfig=AppBarConfiguration.Builder(
+            R.id.homeFragment, R.id.searchFragment,R.id.notificationFragment, R.id.userFragment
+        ).build()
+        NavigationUI.setupActionBarWithNavController(this,nhf.navController,appBarConfig)
     }
 
 
@@ -57,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         setSupportActionBar(binding.toolbar)
         // 뒤로가기 버튼 생성
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     @Override
@@ -77,12 +82,12 @@ class MainActivity : AppCompatActivity() {
         userFragment.arguments = bundle
         supportFragmentManager.beginTransaction().replace(R.id.fragment ,userFragment).commit()
     }
-    // up button 처리하는 함수
-    /*
+     //up button 처리하는 함수
+
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.fragment).navigateUp(appbarc) || super.onSupportNavigateUp()
     }
-    */
+
 
 
     // 메뉴 제작

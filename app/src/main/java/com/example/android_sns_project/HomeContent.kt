@@ -23,6 +23,7 @@ class HomeContent {
     var userID:String = "kyun_q"
     var likeClick: Boolean = false
     private var commentButton: ImageButton
+    private var userImageButton: ImageButton
     @SuppressLint("SetTextI18n", "InflateParams")
     constructor(context: Context?, d: DocumentSnapshot)  {
 
@@ -32,6 +33,8 @@ class HomeContent {
         //추가할 커스텀 레이아웃 가져오기
         val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         customLayout = layoutInflater.inflate(R.layout.home_content, null)
+
+
 
         //커스텀 레이아웃 내부 뷰 접근
         val userName: TextView = customLayout.findViewById<TextView>(R.id.userID)
@@ -44,11 +47,11 @@ class HomeContent {
         likeDescription.text = "${d["likeCount"].toString()}명이 좋아합니다"
 
         val likeButton: ImageButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
-        var userImage : ImageView = customLayout.findViewById<ImageView>(R.id.userImage)
-        userImage.setOnClickListener{
-            MainActivity().changeFragment( d["email"].toString())
-
-        }
+        userImageButton = customLayout.findViewById<ImageButton>(R.id.userImage)
+//        userImage.setOnClickListener{
+//            MainActivity().changeFragment( d["email"].toString())
+//
+//        }
 
         val likeMd = db.collection("content").document(id).collection("likes")
         likeMd.get().addOnSuccessListener {
@@ -96,6 +99,10 @@ class HomeContent {
 
     public fun getCommentButton(): ImageButton {
         return commentButton
+    }
+
+    public fun getUserImage() :ImageView {
+        return userImageButton
     }
 
     public fun getID() : String {
