@@ -115,22 +115,27 @@ class UserFragment : Fragment() {
             ?.addSnapshotListener { snapshot, error ->
                 // var items = mutableListOf<Item>()
                 Log.d("follow", snapshot.toString())
-                if(snapshot == null) return@addSnapshotListener
+                if (snapshot == null) return@addSnapshotListener
 
                 //
-                for(snapshot in snapshot.documents) {
+                for (snapshot in snapshot.documents) {
                     userInfo = snapshot.toObject(UserInfo::class.java)
                     id = snapshot.id
                     //이미 목록에 존재하면
-                    if(userInfo?.followings?.containsKey(userId) == true){
+                    if (userInfo?.followings?.containsKey(userId) == true) {
                         userInfo?.followingCount = userInfo?.followingCount!! - 1
-                    }else{
-
+                        userInfo?.followers!!.remove(userId)
+                    } else {
+                        userInfo?.followingCount = userInfo?.followingCount!! + 1
+                        userInfo?.followers!![userId!!] = true
                     }
 
+                    // db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
+                    db?.collection("content")?.document(id!!)?.set(userInfo!!)
 
-                //   }
-                //adapter?.updateList(items)
+                    //   }
+                    //adapter?.updateList(items)
+                }
             }
     }}
 
@@ -225,8 +230,8 @@ class UserFragment : Fragment() {
         override fun getItemCount(): Int {
             return contents.size
         }
-    }
-    private fun updateList() {
+
+  //  private fun updateList() {
 //        //content collect에 접근
 //        itemsCollectionRef.get().addOnSuccessListener {
 //           // var items = mutableListOf<Item>()

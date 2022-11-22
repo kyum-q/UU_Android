@@ -289,7 +289,7 @@ class SignUpActivity : AppCompatActivity() {
                         userInfo.followerCount = 0
                         userInfo.followingCount = 0
                         userInfo.profileImagePath  = null
-                        db?.collection("UserInfo")?.document()?.set(userInfo)
+                        db?.collection("UserInfo")?.document(usrEmail)?.set(userInfo)
 
                         // ************************* Firebase Auth Store ************************* //
                         val user = Firebase.auth.getCurrentUser()
