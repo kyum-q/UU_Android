@@ -267,8 +267,7 @@ class SignUpActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // ********************* Realtime Database Users Table ********************* //
                         val usrKey = dbRef.push().key!!
-
-                        val usrInfo = User(usrKey, usrEmail, usrPassword, usrName, usrNickname)
+                        val usrInfo = User(usrKey, usrEmail, usrPassword, usrName, usrNickname, 0, 0)
 
                         dbRef.child(usrKey).setValue(usrInfo)
                             .addOnCompleteListener {
