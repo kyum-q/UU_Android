@@ -11,11 +11,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android_sns_project.data.Content
 import com.example.android_sns_project.databinding.ActivityPostBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -35,9 +37,12 @@ class PostingActivity : AppCompatActivity() {
     lateinit var storage : FirebaseStorage
     private val db: FirebaseFirestore = Firebase.firestore
     var resizeBitmap: Bitmap? = null
+
     var auth : FirebaseAuth? = null
 
     var options = BitmapFactory.Options()
+    var nickname : String =""
+
     companion object {
         const val REQUEST_CODE = 1
         const val UPLOAD_FOLDER = "upload_images/"
@@ -49,6 +54,9 @@ class PostingActivity : AppCompatActivity() {
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+//        nickname = intent.extras("loginUser")
+//        Log.v("test log",nickname)
         //FireBase.auth.currentUser ? : finish()
         storage = Firebase.storage;
 
@@ -107,6 +115,7 @@ class PostingActivity : AppCompatActivity() {
                 null,
                 options
             )  //3번
+
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height
             if(width > height)

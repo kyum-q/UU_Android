@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_sns_project.data.Content
@@ -67,6 +69,7 @@ class UserFragment : Fragment() {
         adapter = UserFragmentAdapter()
 
         Log.d("User",auth?.currentUser?.email.toString() )
+
         roofRef2.child("Users").orderByChild("email").
         equalTo(auth?.currentUser?.email).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -133,9 +136,11 @@ class UserFragment : Fragment() {
 
     inner class MyViewHolder(var imageView: ImageView) : RecyclerView.ViewHolder(imageView)
 
+    @SuppressLint("SuspiciousIndentation")
     inner class UserFragmentAdapter : RecyclerView.Adapter<MyViewHolder>(){
         private val itemsCollectionRef = db.collection("content")
         var contents : ArrayList<Content> = arrayListOf()
+        var contentsID : ArrayList<String> = arrayListOf()
         var items : ArrayList<Item> = arrayListOf()
 
         init {
@@ -148,6 +153,7 @@ class UserFragment : Fragment() {
                     //      CoroutineScope(Dispatchers.Main).launch {
                     for(snapshot in snapshot.documents) {
                         contents.add(snapshot.toObject(Content::class.java)!!)
+                        contentsID.add(snapshot.id)
                         Log.d("TAG","전 ${contents.size}")
 
                         notifyDataSetChanged()
@@ -188,6 +194,11 @@ class UserFragment : Fragment() {
                         //imgView?.setImageBitmap(bmp)
                        // items?.add(Item(content, bmp))
 
+                        imageView.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("id",contentsID[position])
+                            findNavController().navigate(com.example.android_sns_project.R.id.action_userFragment_to_myContentFragment, bundle)
+                        }
                     }
                 }
           //  }

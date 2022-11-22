@@ -15,6 +15,7 @@ import com.example.android_sns_project.data.User
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -267,8 +268,7 @@ class SignUpActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // ********************* Realtime Database Users Table ********************* //
                         val usrKey = dbRef.push().key!!
-
-                        val usrInfo = User(usrKey, usrEmail, usrPassword, usrName, usrNickname)
+                        val usrInfo = User(usrKey, usrEmail, usrPassword, usrName, usrNickname, 0, 0)
 
                         dbRef.child(usrKey).setValue(usrInfo)
                             .addOnCompleteListener {

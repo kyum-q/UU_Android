@@ -65,8 +65,8 @@
 
             <ImageButton
                 android:id="@+id/likeButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:background="@color/transparent"
@@ -76,8 +76,8 @@
 
             <ImageButton
                 android:id="@+id/commentButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:background="@color/transparent"
@@ -92,6 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginBottom="5dp"
             android:text="~~님 외 7명이 좋아합니다" />
 
         <LinearLayout
@@ -107,6 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="kyum_q"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
