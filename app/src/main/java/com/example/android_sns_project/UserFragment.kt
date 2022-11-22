@@ -72,26 +72,26 @@ class UserFragment : Fragment() {
         adapter = UserFragmentAdapter()
         currentUserId = auth?.currentUser?.email
         userId = arguments?.getString("userId")
-        Log.d("follow","다른UserId : ${userId}")
+        follwerUpdate()
 
 
 
-        db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
-            ?.addSnapshotListener { snapshot, error ->
-                // var items = mutableListOf<Item>()
-                Log.d("follow", snapshot.toString())
-                if(snapshot == null) return@addSnapshotListener
-//                snapshot.toSet()
-                //      CoroutineScope(Dispatchers.Main).launch {
-                for(snapshot in snapshot.documents) {
-                    userInfo = snapshot.toObject(UserInfo::class.java)
-                    binding!!.followerCount.text = userInfo?.followerCount.toString()
-                    binding!!.followingCount.text = userInfo?.followingCount.toString()
-                }
-
-                //   }
-                //adapter?.updateList(items)
-            }
+//        db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
+//            ?.addSnapshotListener { snapshot, error ->
+//                // var items = mutableListOf<Item>()
+//                Log.d("follow", snapshot.toString())
+//                if(snapshot == null) return@addSnapshotListener
+////                snapshot.toSet()
+//                //      CoroutineScope(Dispatchers.Main).launch {
+//                for(snapshot in snapshot.documents) {
+//                    userInfo = snapshot.toObject(UserInfo::class.java)
+//                    binding!!.followerCount.text = userInfo?.followerCount.toString()
+//                    binding!!.followingCount.text = userInfo?.followingCount.toString()
+//                }
+//
+//                //   }
+//                //adapter?.updateList(items)
+//            }
 
 
         //프로필 사진 바꾸는 이벤트
@@ -109,36 +109,24 @@ class UserFragment : Fragment() {
         return binding?.root
     }
 
-    fun follow(){
-        var id :String? =null
-        db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
-            ?.addSnapshotListener { snapshot, error ->
-                // var items = mutableListOf<Item>()
-                Log.d("follow", snapshot.toString())
-                if (snapshot == null) return@addSnapshotListener
 
-                //
-                for (snapshot in snapshot.documents) {
-                    userInfo = snapshot.toObject(UserInfo::class.java)
-                    id = snapshot.id
-                    //이미 목록에 존재하면
-                    if (userInfo?.followings?.containsKey(userId) == true) {
-                        userInfo?.followingCount = userInfo?.followingCount!! - 1
-                        userInfo?.followers!!.remove(userId)
-                    } else {
-                        userInfo?.followingCount = userInfo?.followingCount!! + 1
-                        userInfo?.followers!![userId!!] = true
-                    }
+    fun follwerUpdate(){
+        var user_db = db.collection("UserInfo")?.document(auth?.currentUser?.email!!)
+        Log.d("follow", "follow() ${userId}")
+        user_db?.addSnapshotListener {snapshot, error ->
+            if(snapshot == null) return@addSnapshotListener
+            var user = snapshot.toObject(UserInfo::class.java)
 
-                    // db.collection("UserInfo")?.whereEqualTo("email",auth?.currentUser?.email)
-                    db?.collection("content")?.document(id!!)?.set(userInfo!!)
+            if(user?.followerCount != null){
+                binding!!.followerCount.text = user.followerCount.toString()
 
-                    //   }
-                    //adapter?.updateList(items)
-                }
             }
-    }
+            if(user?.followingCount != null){
+                binding!!.followingCount.text = user.followingCount.toString()
+            }
 
+        }
+    }
     //갤러리에서 돌아올 때
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
       //  super.onActivityResult(requestCode)

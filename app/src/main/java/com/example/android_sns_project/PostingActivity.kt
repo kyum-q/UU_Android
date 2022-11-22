@@ -80,7 +80,7 @@ class PostingActivity : AppCompatActivity() {
         val deviceHeight = resources.displayMetrics.heightPixels
         val options = BitmapFactory.Options()
         try {
-            bitmap = BitmapFactory.decodeStream(
+            BitmapFactory.decodeStream(
                 context.getContentResolver().openInputStream(uri),
                 null,
                 options
@@ -89,22 +89,24 @@ class PostingActivity : AppCompatActivity() {
 //                options.outWidth = options.outHeight
 //            else
 //                options.outHeight = options.outWidth
+//            var width = options.outWidth
+//            if (bitmap != null) {
+//                if(width >= bitmap.width){
+//                    width = bitmap.width
+//                    options.outWidth=width
+//                }
+//
+//            }
+//            var height = options.outHeight
+//            if (bitmap != null) {
+//                if(height >= bitmap.height){
+//                    height = bitmap.height
+//                    options.outHeight =height
+//                }
+//
+//            }
             var width = options.outWidth
-            if (bitmap != null) {
-                if(width >= bitmap.width){
-                    width = bitmap.width
-                    options.outWidth=width
-                }
-
-            }
             var height = options.outHeight
-            if (bitmap != null) {
-                if(height >= bitmap.height){
-                    height = bitmap.height
-                    options.outHeight =height
-                }
-
-            }
 //            var samplesize = 1
 //            //사진 용량 줄이는 코드
 //            while (true) { //2번
@@ -114,14 +116,15 @@ class PostingActivity : AppCompatActivity() {
 //                samplesize *= 2
 //            }
 //            options.inSampleSize = samplesize
-//            bitmap =BitmapFactory.decodeStream(
-//                context.getContentResolver().openInputStream(uri),
-//                null,
-//                options
-//            )  //3번
-
+            bitmap =BitmapFactory.decodeStream(
+                context.getContentResolver().openInputStream(uri),
+                null,
+                options
+            )  //3번
+//            resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, height, true)
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height
+
             if(width > height)
                 resizeBitmap = Bitmap.createBitmap(bitmap!!,bitmap.height/4, 0, bitmap.height, bitmap.height)
             else
@@ -149,9 +152,9 @@ class PostingActivity : AppCompatActivity() {
         if(requestCode == 0){
             if(resultCode == Activity.RESULT_OK){
                 photoUri = data?.data
-                photoBitmap= resize(this, photoUri!!, 1000)
+                photoBitmap= resize(this, photoUri!!, 2000)
 
-                binding.photoView.setImageBitmap(photoBitmap)
+                binding.photoView.setImageURI(photoUri)
             }else{
                 finish()
             }

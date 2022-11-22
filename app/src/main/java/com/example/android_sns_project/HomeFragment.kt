@@ -1,11 +1,13 @@
 package com.example.android_sns_project
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.android_sns_project.data.UserInfo
 import com.example.android_sns_project.databinding.FragmentHomeBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -35,7 +37,7 @@ class HomeFragment : Fragment() {
                 }
                 context.getUserImage().setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putString("email",context.getID())
+                    bundle.putString("email",d["userId"].toString())
                     findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_otherUserFragment, bundle)
                 }
             }
