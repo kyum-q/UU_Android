@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".UserFragment">
 
@@ -10,17 +11,20 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="150dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/account_profile"
+            app:civ_border_overlay="true"
+            app:civ_border_width="3dp"
+            app:civ_border_color="#000000"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/account"/>
 
-            <ImageView
-                android:id="@+id/account_profile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/account" />
 
             <Button
                 android:id="@+id/account_btn_follow"
@@ -49,6 +53,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/contentCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />
@@ -68,6 +73,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/followerCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />
@@ -87,6 +93,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/followingCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0" />

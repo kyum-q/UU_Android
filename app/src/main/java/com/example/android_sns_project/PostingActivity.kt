@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android_sns_project.data.Content
 import com.example.android_sns_project.databinding.ActivityPostBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -36,6 +37,9 @@ class PostingActivity : AppCompatActivity() {
     lateinit var storage : FirebaseStorage
     private val db: FirebaseFirestore = Firebase.firestore
     var resizeBitmap: Bitmap? = null
+
+    var auth : FirebaseAuth? = null
+
     var options = BitmapFactory.Options()
     var nickname : String =""
 
@@ -46,7 +50,7 @@ class PostingActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        auth = FirebaseAuth.getInstance()
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -81,14 +85,22 @@ class PostingActivity : AppCompatActivity() {
                 null,
                 options
             ) // 1번
-
-
 //            if(options.outWidth > options.outHeight)
 //                options.outWidth = options.outHeight
 //            else
 //                options.outHeight = options.outWidth
             var width = options.outWidth
+            if (bitmap != null) {
+                if(width >= bitmap.width)
+                    width = bitmap.width
+                 options.outWidth=width
+            }
             var height = options.outHeight
+            if (bitmap != null) {
+                if(height >= bitmap.height)
+                    height = bitmap.height
+                options.outHeight =height
+            }
             var samplesize = 1
             //사진 용량 줄이는 코드
             while (true) { //2번
@@ -98,15 +110,18 @@ class PostingActivity : AppCompatActivity() {
                 samplesize *= 2
             }
             options.inSampleSize = samplesize
-            bitmap =  BitmapFactory.decodeStream(
+            bitmap =BitmapFactory.decodeStream(
                 context.getContentResolver().openInputStream(uri),
                 null,
                 options
-            )//3번
+            )  //3번
+
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height
-            val scaleHeight =  width
-            resizeBitmap = Bitmap.createBitmap(bitmap!!,0, height / 4 , width, width )
+            if(width > height)
+                resizeBitmap = Bitmap.createBitmap(bitmap!!,bitmap.height/4, 0, bitmap.height, bitmap.height)
+            else
+                resizeBitmap = Bitmap.createBitmap(bitmap!!,0, bitmap.width/4 , bitmap.width, bitmap.width)
             // 비트 맵의 가로 세로 비율 조정
            // resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, scaleHeight, true)
 
@@ -161,10 +176,9 @@ class PostingActivity : AppCompatActivity() {
                //게시물 데이터 객체
                 var content = Content()
                 //uid
-                content.uid = Firebase.auth.currentUser?.uid
-                Log.v("test log", content.uid!!)
+                content.uid = auth?.currentUser?.uid
                 //userId
-                //content.userId = auth?.currentUser?.email
+                content.userId = auth?.currentUser?.email
                 //imageUri
                 content.imageUri = uri.toString()
                 //comment
