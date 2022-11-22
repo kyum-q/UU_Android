@@ -12,7 +12,8 @@ import com.google.firebase.ktx.Firebase
 class CommentFragment : Fragment() {
     private var binding: FragmentCommentBinding? = null
     val db = Firebase.firestore
-    private var userID: String = "jeungsig"
+    private var nickname: String = ""
+    private var userID: String = ""
 
     lateinit var customLayout: View
 
@@ -21,18 +22,25 @@ class CommentFragment : Fragment() {
 
         binding = FragmentCommentBinding.inflate(inflater, container, false)
         val ID = arguments?.getString("id").toString()
-
         // 해당 레퍼런스 가져오기
         val md = db.collection("content").document(ID)
 
         md.get().addOnSuccessListener {
-            binding?.userId?.setText(it["userId"].toString())
+            userID = it["userId"].toString()
+            val userInfo = db.collection("UserInfo").document(userID)
+
+            //커스텀 레이아웃 내부 뷰 접근
+            userInfo.get().addOnSuccessListener {
+                nickname = it["nickname"].toString()
+                binding?.userId?.setText(nickname)
+            }
+
             binding?.explain?.setText(it["explain"].toString())
 
             val commendMd = md.collection("comments")
             commendMd.get().addOnSuccessListener {
                 for (d in it) {
-                    var comment: HomeComment = HomeComment(context, d["commentID"].toString(), d["commentText"].toString())
+                    var comment: HomeComment = HomeComment(context, userID, d["commentText"].toString())
                     //LienarLayout에 커스텀 레이아웃 추가
                     binding?.commentsLayout?.addView(comment.getLayout())
                 }
@@ -49,7 +57,7 @@ class CommentFragment : Fragment() {
                     "commentID" to userID,
                     "commentText" to commentText
                 )
-                commentMd.document().set(commentMap)
+                commentMd.document(userID).set(commentMap)
             }
 
             var comment: HomeComment = HomeComment(context, userID,commentText)

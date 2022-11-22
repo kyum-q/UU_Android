@@ -13,20 +13,23 @@ import com.google.firebase.storage.ktx.storage
 class HomeComment {
     val db = Firebase.firestore
     val rootRef = Firebase.storage.reference
-
     lateinit var customLayout: View
     @SuppressLint("SetTextI18n", "InflateParams")
     constructor(context: Context?, AddCommentID:String, AddCommentText:String)  {
-
-        val userID = AddCommentID //d["comment_id"].toString()
 
         //추가할 커스텀 레이아웃 가져오기
         val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         customLayout = layoutInflater.inflate(R.layout.comment, null)
 
+        val userInfo = db.collection("UserInfo").document(AddCommentID)
+
         //커스텀 레이아웃 내부 뷰 접근
-        val commentID: TextView = customLayout.findViewById<TextView>(R.id.comment_id)
-        commentID.text =userID
+        userInfo.get().addOnSuccessListener {
+            val userID = it["nickname"].toString() //d["comment_id"].toString()
+            val commentID: TextView = customLayout.findViewById<TextView>(R.id.comment_id)
+            commentID.text =userID
+        }
+
         val commentText: TextView = customLayout.findViewById<TextView>(R.id.comment_text)
         commentText.text = AddCommentText//d["comment"].toString()
     }

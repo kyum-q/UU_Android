@@ -4,27 +4,18 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.example.android_sns_project.databinding.ActivityMainBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.core.UserWriteRecord
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appbarc: AppBarConfiguration
@@ -146,7 +137,6 @@ class MainActivity : AppCompatActivity() {
         NotificationManagerCompat.from(this)
             .notify(1, builder.build())
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {

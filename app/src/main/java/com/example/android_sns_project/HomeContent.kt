@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,7 +25,9 @@ class HomeContent {
     var emailInfo:String = "kyun_q"
     var likeClick: Boolean = false
     private var commentButton: ImageButton
-    private var userImageButton: ImageButton
+    private var likeButton: ImageButton
+    var userImageButton: ImageButton
+    val likeDescription: TextView
     @SuppressLint("SetTextI18n", "InflateParams")
     constructor(context: Context?, d: DocumentSnapshot)  {
 
@@ -47,10 +50,10 @@ class HomeContent {
 
         val explain: TextView = customLayout.findViewById<TextView>(R.id.explain)
         explain.text = d["explain"].toString()
-        val likeDescription: TextView = customLayout.findViewById<TextView>(R.id.likeDescription)
+        likeDescription = customLayout.findViewById<TextView>(R.id.likeDescription)
         likeDescription.text = "${d["likeCount"].toString()}명이 좋아합니다"
 
-        val likeButton: ImageButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
+        likeButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
         userImageButton = customLayout.findViewById<ImageButton>(R.id.userImage)
 //        userImage.setOnClickListener{
 //            MainActivity().changeFragment( d["email"].toString())
@@ -65,20 +68,6 @@ class HomeContent {
                     likeClick = true
                 }
         }
-
-
-        likeButton.setOnClickListener {
-            if (likeClick == false) {
-                likeButton.setImageResource(R.drawable.heart_click_icon)
-                setLikeCount(likeDescription, 1)
-                likeClick = true
-            } else {
-                setLikeCount(likeDescription, -1)
-                likeButton.setImageResource(R.drawable.heart_icon)
-                likeClick = false
-            }
-        }
-
         commentButton = customLayout.findViewById<ImageButton>(R.id.commentButton)
 
         // 이미지 알아내기
@@ -97,12 +86,28 @@ class HomeContent {
         }
     }
 
+    fun setLike() {
+        if (likeClick == false) {
+            likeButton.setImageResource(R.drawable.heart_click_icon)
+            setLikeCount(likeDescription, 1)
+            likeClick = true
+        } else {
+            setLikeCount(likeDescription, -1)
+            likeButton.setImageResource(R.drawable.heart_icon)
+            likeClick = false
+        }
+    }
+
     public fun getLayout(): View {
         return customLayout
     }
 
     public fun getCommentButton(): ImageButton {
         return commentButton
+    }
+
+    public fun getLikeButton(): ImageButton {
+        return likeButton
     }
 
     public fun getUserImage() :ImageView {
@@ -115,6 +120,10 @@ class HomeContent {
 
     public fun getEmail() : String {
         return emailInfo
+    }
+
+    public fun isLikeClick() : Boolean {
+        return likeClick
     }
 
      private fun setLikeCount(likeDescription: TextView, changeCount:Int) {
