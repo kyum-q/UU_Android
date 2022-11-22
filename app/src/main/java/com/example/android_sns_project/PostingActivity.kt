@@ -80,7 +80,7 @@ class PostingActivity : AppCompatActivity() {
         val deviceHeight = resources.displayMetrics.heightPixels
         val options = BitmapFactory.Options()
         try {
-            BitmapFactory.decodeStream(
+            bitmap = BitmapFactory.decodeStream(
                 context.getContentResolver().openInputStream(uri),
                 null,
                 options
@@ -105,20 +105,20 @@ class PostingActivity : AppCompatActivity() {
                 }
 
             }
-            var samplesize = 1
-            //사진 용량 줄이는 코드
-            while (true) { //2번
-                if (width / 2 < resize || height / 2 < resize) break
-                width /= 2
-                height /= 2
-                samplesize *= 2
-            }
-            options.inSampleSize = samplesize
-            bitmap =BitmapFactory.decodeStream(
-                context.getContentResolver().openInputStream(uri),
-                null,
-                options
-            )  //3번
+//            var samplesize = 1
+//            //사진 용량 줄이는 코드
+//            while (true) { //2번
+//                if (width / 2 < resize || height / 2 < resize) break
+//                width /= 2
+//                height /= 2
+//                samplesize *= 2
+//            }
+//            options.inSampleSize = samplesize
+//            bitmap =BitmapFactory.decodeStream(
+//                context.getContentResolver().openInputStream(uri),
+//                null,
+//                options
+//            )  //3번
 
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height

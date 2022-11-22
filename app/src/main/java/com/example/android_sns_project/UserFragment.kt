@@ -137,7 +137,7 @@ class UserFragment : Fragment() {
                     //adapter?.updateList(items)
                 }
             }
-    }}
+    }
 
     //갤러리에서 돌아올 때
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
