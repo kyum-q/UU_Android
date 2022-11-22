@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.example.android_sns_project'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.android_sns_project"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

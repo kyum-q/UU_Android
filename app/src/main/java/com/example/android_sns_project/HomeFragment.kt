@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
                 }
                 context.getUserImage().setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putString("email",context.getID())
+                    bundle.putString("email",context.getEmail())
                     findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_otherUserFragment, bundle)
                 }
             }

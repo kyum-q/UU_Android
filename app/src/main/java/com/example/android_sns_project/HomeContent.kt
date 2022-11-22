@@ -21,6 +21,7 @@ class HomeContent {
     val rootRef = Firebase.storage.reference
     var id:String = ""
     var userID:String = "kyun_q"
+    var emailInfo:String = "kyun_q"
     var likeClick: Boolean = false
     private var commentButton: ImageButton
     private var userImageButton: ImageButton
@@ -28,19 +29,22 @@ class HomeContent {
     constructor(context: Context?, d: DocumentSnapshot)  {
 
         id = d.id
-        val conteentUserID = d["userId"].toString()
+        emailInfo = d["userId"].toString()
 
         //추가할 커스텀 레이아웃 가져오기
         val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         customLayout = layoutInflater.inflate(R.layout.home_content, null)
 
-
+        val userInfo = db.collection("UserInfo").document(emailInfo)
 
         //커스텀 레이아웃 내부 뷰 접근
-        val userName: TextView = customLayout.findViewById<TextView>(R.id.userID)
-        userName.text =conteentUserID
-        val userName2: TextView = customLayout.findViewById<TextView>(R.id.userID2)
-        userName2.text = conteentUserID
+        userInfo.get().addOnSuccessListener {
+            val userName: TextView = customLayout.findViewById<TextView>(R.id.userID)
+            userName.text = it["nickname"].toString()
+            val userName2: TextView = customLayout.findViewById<TextView>(R.id.userID2)
+            userName2.text = it["nickname"].toString()
+        }
+
         val explain: TextView = customLayout.findViewById<TextView>(R.id.explain)
         explain.text = d["explain"].toString()
         val likeDescription: TextView = customLayout.findViewById<TextView>(R.id.likeDescription)
@@ -107,6 +111,10 @@ class HomeContent {
 
     public fun getID() : String {
         return id
+    }
+
+    public fun getEmail() : String {
+        return emailInfo
     }
 
      private fun setLikeCount(likeDescription: TextView, changeCount:Int) {
