@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
 
         getFCMToken()
         
-            })
         }
     private fun getFCMToken(): String?{
         var token: String? = null
