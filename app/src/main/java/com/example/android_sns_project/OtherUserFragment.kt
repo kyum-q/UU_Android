@@ -1,6 +1,7 @@
 package com.example.android_sns_project
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -65,14 +66,17 @@ class OtherUserFragment : Fragment() {
         adapter = UserFragmentAdapter()
         binding!!.recyclerView.adapter = adapter
         follwerUpdate()
+        //팔로우 버튼 이벤트
         binding!!.accountBtnFollow.setOnClickListener {
             follow()
         }
+
         return binding?.root
     }
 
     fun follow(){
         var id :String? =null
+        //버튼을 누른 사람의 email을 가져온다
         var user_db = db.collection("UserInfo")?.document(userId!!)
         Log.d("follow", "follow() ${userId}")
         user_db?.get()?.addOnSuccessListener {
@@ -154,9 +158,12 @@ class OtherUserFragment : Fragment() {
 
                     //      CoroutineScope(Dispatchers.Main).launch {
                     for(snapshot in snapshot.documents) {
-                        contents.add(snapshot.toObject(Content::class.java)!!)
-                        contentsID.add(snapshot.id)
-                        Log.d("TAG","전 ${contents.size}")
+                        if(!contents.contains(snapshot.toObject(Content::class.java))){
+                            contents.add(snapshot.toObject(Content::class.java)!!)
+                            contentsID.add(snapshot.id)
+                            Log.d("TAG","전 ${contents.size}")
+
+                        }
 
                         notifyDataSetChanged()
                         Log.d("TAG","후 ${contents.size}")

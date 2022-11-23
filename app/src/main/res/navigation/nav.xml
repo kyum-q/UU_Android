@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_userFragment_to_myContentFragment"
             app:destination="@id/myContentFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_followingFragment"
+            app:destination="@id/followingFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
@@ -63,5 +66,10 @@
             android:id="@+id/action_otherUserFragment_to_myContentFragment"
             app:destination="@id/myContentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/followingFragment"
+        android:name="com.example.android_sns_project.FollowingFragment"
+        android:label="fragment_following"
+        tools:layout="@layout/fragment_following" />
 
 </navigation>

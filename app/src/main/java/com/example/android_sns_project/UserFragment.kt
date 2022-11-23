@@ -104,6 +104,13 @@ class UserFragment : Fragment() {
             )
         }
 
+        //팔로잉 목록 이벤트 (followers)
+        binding!!.followingCount.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("email",auth?.currentUser?.email)
+            findNavController().navigate(R.id.action_userFragment_to_followingFragment,bundle)
+        }
+
         binding!!.recyclerView.adapter = adapter
         // updateList()
         return binding?.root
@@ -175,10 +182,6 @@ class UserFragment : Fragment() {
                             contentsID.add(snapshot.id)
                             Log.d("TAG","전 ${contents.size}")
                         }
-
-
-
-
                         notifyDataSetChanged()
                         Log.d("TAG", "후 ${contents.size}")
                     }
