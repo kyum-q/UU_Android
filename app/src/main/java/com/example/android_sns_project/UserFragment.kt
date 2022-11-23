@@ -85,12 +85,10 @@ class UserFragment : Fragment() {
                 //      CoroutineScope(Dispatchers.Main).launch {
                 for (snapshot in snapshot.documents) {
                     userInfo = snapshot.toObject(UserInfo::class.java)
-                    binding!!.followerCount.text = userInfo?.followingCount.toString()
-                    binding!!.followingCount.text = userInfo?.followerCount.toString()
+                    binding!!.followerCount.text = userInfo?.followerCount.toString()
+                    binding!!.followingCount.text = userInfo?.followingCount.toString()
+                    binding!!.nickName.text = userInfo?.nickname.toString()
                 }
-
-                //   }
-                //adapter?.updateList(items)
             }
 
         //프로필 사진 바꾸는 이벤트
@@ -105,10 +103,16 @@ class UserFragment : Fragment() {
         }
 
         //팔로잉 목록 이벤트 (followers)
-        binding!!.followingCount.setOnClickListener {
+        binding!!.followingLinear.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("email",auth?.currentUser?.email)
             findNavController().navigate(R.id.action_userFragment_to_followingFragment,bundle)
+        }
+        //팔로워 목록 이벤트 (followers)
+        binding!!.followerLinear.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("email",auth?.currentUser?.email)
+            findNavController().navigate(R.id.action_userFragment_to_followerFragment,bundle)
         }
 
         binding!!.recyclerView.adapter = adapter
@@ -116,32 +120,7 @@ class UserFragment : Fragment() {
         return binding?.root
     }
 
-    fun follow() {
-        var id: String? = null
-        db.collection("UserInfo")?.whereEqualTo("email", auth?.currentUser?.email)
-            ?.addSnapshotListener { snapshot, error ->
-                // var items = mutableListOf<Item>()
-                Log.d("follow", snapshot.toString())
-                if (snapshot == null) return@addSnapshotListener
 
-
-                fun follwerUpdate() {
-                    var user_db = db.collection("UserInfo")?.document(auth?.currentUser?.email!!)
-                    Log.d("follow", "follow() ${userId}")
-                    user_db?.addSnapshotListener { snapshot, error ->
-                        if (snapshot == null) return@addSnapshotListener
-                        var user = snapshot.toObject(UserInfo::class.java)
-
-                        if (user?.followerCount != null) {
-                            binding!!.followerCount.text = user.followerCount.toString()
-
-                        }
-                    }
-
-
-                }
-            }
-    }
 
     //갤러리에서 돌아올 때
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

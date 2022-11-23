@@ -20,6 +20,7 @@ import com.example.android_sns_project.data.Content
 import com.example.android_sns_project.data.UserInfo
 import com.example.android_sns_project.data.UserList
 import com.example.android_sns_project.databinding.ContentItemBinding
+import com.example.android_sns_project.databinding.FragmentFollowerBinding
 import com.example.android_sns_project.databinding.FragmentFollowingBinding
 import com.example.android_sns_project.databinding.FragmentUserBinding
 import com.example.android_sns_project.databinding.UserListItemBinding
@@ -30,13 +31,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 
-class FollowingFragment : Fragment() {
+class FollowerFragment : Fragment() {
     // TODO: Rename and change types of parameters
     val db = Firebase.firestore
     val rootRef = Firebase.storage.reference
-    private var adapter: FollowingFragment.userListAdapter? = null
+    private var adapter: FollowerFragment.userFollowerAdapter? = null
     private val itemsCollectionRef = db.collection("content")
-    private var binding: FragmentFollowingBinding? = null
+    private var binding: FragmentFollowerBinding? = null
 
     var auth: FirebaseAuth? = null
     var currentEmail: String? = null
@@ -50,27 +51,28 @@ class FollowingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFollowingBinding.inflate(inflater, container, false)
+        binding = FragmentFollowerBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         // recyclerview setup
 
         currentEmail = arguments?.getString("email")
 
         binding!!.recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = userListAdapter()
+        adapter = userFollowerAdapter()
         binding!!.recyclerView.adapter = adapter
+
         return binding?.root
     }
 
-    inner class MyViewHolder(val binding: UserListItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class FollowerViewHolder(val binding: UserListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     @SuppressLint("SuspiciousIndentation")
-    inner class userListAdapter : RecyclerView.Adapter<FollowingFragment.MyViewHolder>() {
+    inner class userFollowerAdapter : RecyclerView.Adapter<FollowerFragment.FollowerViewHolder>() {
 
         private val itemsCollectionRef = db.collection("content")
         var userInfos: ArrayList<UserInfo> = arrayListOf()
         var currentUserInfo : UserInfo? = null;
-        var followingList :  ArrayList<UserInfo> = arrayListOf()
+        var followerList :  ArrayList<UserInfo> = arrayListOf()
 
         init {
             Log.d("followList", "생성자 호출")
@@ -88,15 +90,14 @@ class FollowingFragment : Fragment() {
                     if(it.email == currentEmail ){
                         //현재 유저의 팔로잉 리스트
                         currentUserInfo = it
-                        }
                     }
+                }
                 //팔로잉 리스트에 userInfo 담기
-                //my
-                currentUserInfo?.followings?.map{(key, value) ->
+                currentUserInfo?.followers?.map{(key, value) ->
                     userInfos.forEach{
                         if(it.email == key){
                             Log.d("followList","followingList${it}" )
-                            followingList.add(it)
+                            followerList.add(it)
                         }
                     }
                 }
@@ -106,26 +107,27 @@ class FollowingFragment : Fragment() {
 
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             val binding: UserListItemBinding = UserListItemBinding.inflate(inflater, parent, false)
-            return MyViewHolder(binding)
+            return FollowerViewHolder(binding)
         }
 
-        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            Log.d("followList",followingList[position].email.toString() )
-            val item = followingList[position]
+        override fun onBindViewHolder(holder: FollowerViewHolder, position: Int) {
+            Log.d("followList",followerList[position].email.toString() )
+            val item = followerList[position]
             holder.binding.nickName.text= item.nickname
             holder.binding.nickName.setOnClickListener {
                 //클릭한 유저창으로 넘어가기
                 var bundle = Bundle()
                 bundle.putString("email", item.email)
-                findNavController().navigate(R.id.action_followingFragment_to_otherUserFragment,bundle)
+                findNavController().navigate(R.id.action_followerFragment_to_otherUserFragment,bundle)
             }
+
         }
 
         override fun getItemCount(): Int {
-            return followingList.size
+            return followerList.size
         }
     }
 }
