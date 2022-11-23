@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.example.android_sns_project'
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.example.android_sns_project"
         minSdk 23
-        targetSdk 33
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -68,8 +68,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
 
     // 알림 firebase
-    implementation "com.google.firebase:firebase-messaging:23.1.0"
-    implementation "com.google.firebase:firebase-core:21.1.1"
+    implementation "com.google.firebase:firebase-messaging-ktx:23.1.0"
 
     // Corutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
