@@ -9,6 +9,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.android_sns_project.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -26,6 +27,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService()
             sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
         }
         System.out.println("##################################### MESSAGE")
+
     }
 
     // 앱을 식별하기 위한 ID -> 새 토큰이 만들어지면 호출 됌
@@ -35,9 +37,22 @@ class MyFirebaseMessagingService: FirebaseMessagingService()
         super.onNewToken(token)
     }
 
+
+
+    private val channelID = "default"
+
     // 받은 알림을 기기에 표시하는 메서드
     public fun sendNotification(title: String?, body: String)
     {
+        val builder = NotificationCompat.Builder(this, channelID)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        NotificationManagerCompat.from(this)
+            .notify(1, builder.build())
+
+        /*
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -62,7 +77,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService()
                 NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
-
+        */
         //notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
 

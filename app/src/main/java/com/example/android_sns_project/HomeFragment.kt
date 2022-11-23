@@ -12,6 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import android.app.NotificationManager
+import android.content.Intent
+import android.util.JsonReader
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -19,6 +21,7 @@ import com.example.android_sns_project.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 @Suppress("UNREACHABLE_CODE")
@@ -52,7 +55,7 @@ class HomeFragment : Fragment() {
 
                 // 유저 사진 클릭시 유저 frament로 이동
                 content.getUserImage().setOnClickListener {
-                    
+
 
                     val bundle = Bundle()
                     bundle.putString("email",content.getEmail())
@@ -61,9 +64,10 @@ class HomeFragment : Fragment() {
 
                 // like 클릭시 알림 띄우기 (좋아요 true 일때만)
                 content.getLikeButton().setOnClickListener {
-                    if(!content.isLikeClick())
-                        showNotification("kyum_q")  // 알림 시작
+                    if(!content.isLikeClick()) {
+                        //showNotification("kyum_q")  // 알림 시작
 
+                    }
                     content.setLike()
                 }
             }

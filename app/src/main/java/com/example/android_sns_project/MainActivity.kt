@@ -1,5 +1,6 @@
 package com.example.android_sns_project
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -16,6 +18,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.example.android_sns_project.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appbarc: AppBarConfiguration
@@ -56,6 +60,42 @@ class MainActivity : AppCompatActivity() {
         ).build()
         NavigationUI.setupActionBarWithNavController(this, nhf.navController, appBarConfig)
 
+        getFCMToken()
+
+        val TAG: String = "안녕"
+
+            //메인 액티비티에서 등록 토큰 가져오기
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+
+                // Log and toast
+                val msg = "test"
+                Log.d(TAG, msg)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            })
+        }
+    private fun getFCMToken(): String?{
+        var token: String? = null
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                println( "Fetching FCM registration token failed")
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            token = task.result
+
+            // Log and toast
+            println( "FCM Token is ${token}")
+        })
+
+        return token
     }
 
 
@@ -115,6 +155,7 @@ class MainActivity : AppCompatActivity() {
         "firebase-messaging","firebase-messaging channel",
         NotificationManager.IMPORTANCE_DEFAULT
     )
+
 
 }
 
