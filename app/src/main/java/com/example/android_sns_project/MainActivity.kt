@@ -110,6 +110,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    val channel = NotificationChannel(
+        "firebase-messaging","firebase-messaging channel",
+        NotificationManager.IMPORTANCE_DEFAULT
+    )
+
 }
 
 

@@ -1,3 +1,5 @@
+package com.example.android_sns_project
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -15,16 +17,19 @@ class MyFirebaseMessagingService: FirebaseMessagingService()
 {
     private val TAG: String = this.javaClass.simpleName
 
-    override public fun onMessageReceived(remoteMessage: RemoteMessage)
+    // 실행 중이라면 호출해서 메시지 확인
+    override fun onMessageReceived(remoteMessage: RemoteMessage)
     {
         super.onMessageReceived(remoteMessage)
         if (remoteMessage.notification != null)
         {
             sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
         }
+        System.out.println("##################################### MESSAGE")
     }
 
-    override public fun onNewToken(token: String)
+    // 앱을 식별하기 위한 ID -> 새 토큰이 만들어지면 호출 됌
+    override fun onNewToken(token: String)
     {
         Log.d(TAG, "Refreshed token : $token")
         super.onNewToken(token)
@@ -44,6 +49,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService()
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
+            .setSmallIcon(R.drawable.app_icon)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
@@ -57,7 +63,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService()
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        //notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
 
 }
