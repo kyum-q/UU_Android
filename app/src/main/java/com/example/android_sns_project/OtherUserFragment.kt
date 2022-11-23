@@ -1,6 +1,7 @@
 package com.example.android_sns_project
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -64,20 +65,51 @@ class OtherUserFragment : Fragment() {
         binding!!.recyclerView.layoutManager = GridLayoutManager(activity,3)
         adapter = UserFragmentAdapter()
         binding!!.recyclerView.adapter = adapter
-        follwerUpdate()
+
+        db.collection("UserInfo")?.document(userId!!)
+            ?.addSnapshotListener { snapshot, error ->
+                // var items = mutableListOf<Item>()
+                Log.d("follow", snapshot.toString())
+                if (snapshot == null) return@addSnapshotListener
+//                snapshot.toSet()
+                //      CoroutineScope(Dispatchers.Main).launch {
+
+                userInfo = snapshot.toObject(UserInfo::class.java)
+                binding!!.followerCount.text = userInfo?.followerCount.toString()
+                binding!!.followingCount.text = userInfo?.followingCount.toString()
+                binding!!.nickName.text = userInfo?.nickname.toString()
+
+            }
+        //팔로우 버튼 이벤트
         binding!!.accountBtnFollow.setOnClickListener {
             follow()
         }
+        //팔로잉 목록 이벤트
+        binding!!.followingLinear.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("email",userId)
+            findNavController().navigate(R.id.action_otherUserFragment_to_followingFragment,bundle)
+        }
+        //팔로워 목록 이벤트 (followers)
+        binding!!.followerLinear.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("email",userId)
+            findNavController().navigate(R.id.action_otherUserFragment_to_followerFragment2,bundle)
+        }
+
         return binding?.root
     }
 
     fun follow(){
         var id :String? =null
+        //버튼을 누른 사람의 email을 가져온다
         var user_db = db.collection("UserInfo")?.document(userId!!)
-        Log.d("follow", "follow() ${userId}")
+        if(userId == auth?.currentUser?.email) return
+
         user_db?.get()?.addOnSuccessListener {
                 var user = it.toObject(UserInfo::class.java)
                 Log.d("follow", "follow() ${user}")
+            //팔로우 이벤트
                 //이미 목록에 존재하면
                 if (user?.followers?.containsKey(auth?.currentUser?.email)!!) {
                     user?.followerCount = user?.followerCount!! - 1
@@ -90,23 +122,25 @@ class OtherUserFragment : Fragment() {
                     Log.d("follow", "++() ${user}")
                 }
             user_db.set(user)
-            }
+        }
+        var current_user_db = db.collection("UserInfo")?.document(auth?.currentUser?.email!!)
+        current_user_db?.get()?.addOnSuccessListener{
+            var current_user = it.toObject(UserInfo::class.java)
+            //팔로잉 이벤트
+            if (current_user?.followings?.containsKey(userId)!!) {
+                current_user?.followingCount = current_user?.followingCount!! - 1
+                current_user?.followings!!.remove(userId)
 
-//        db?.runTransaction{transition ->{
-//            var user = transition.get(user_db!!).toObject(UserInfo::class.java)
-//            Log.d("follow", "follow(transition) ${user}")
-//            //이미 목록에 존재하면
-//            if (user?.followings?.containsKey(userId) == true) {
-//                user?.followingCount = user?.followingCount!! - 1
-//                user?.followers!!.remove(auth?.currentUser?.email.toString())
-//            } else {
-//                user?.followingCount = user?.followingCount!! + 1
-//                user?.followers!![auth?.currentUser?.email!!] = true
-//            }
-//            transition.set(user_db,user)
-//        }}
+            } else {
+                current_user?.followingCount = current_user?.followingCount!! + 1
+                Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
+                current_user?.followings!![userId!!] = true
+            }
+            current_user_db.set(current_user)
+        }
         follwerUpdate()
     }
+
     fun follwerUpdate(){
         var user_db = db.collection("UserInfo")?.document(userId!!)
         Log.d("follow", "follow() ${userId}")
@@ -154,9 +188,12 @@ class OtherUserFragment : Fragment() {
 
                     //      CoroutineScope(Dispatchers.Main).launch {
                     for(snapshot in snapshot.documents) {
-                        contents.add(snapshot.toObject(Content::class.java)!!)
-                        contentsID.add(snapshot.id)
-                        Log.d("TAG","전 ${contents.size}")
+                        if(!contents.contains(snapshot.toObject(Content::class.java))){
+                            contents.add(snapshot.toObject(Content::class.java)!!)
+                            contentsID.add(snapshot.id)
+                            Log.d("TAG","전 ${contents.size}")
+
+                        }
 
                         notifyDataSetChanged()
                         Log.d("TAG","후 ${contents.size}")

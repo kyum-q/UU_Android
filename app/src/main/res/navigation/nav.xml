@@ -28,6 +28,12 @@
         <action
             android:id="@+id/action_userFragment_to_myContentFragment"
             app:destination="@id/myContentFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_followingFragment"
+            app:destination="@id/followingFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_followerFragment"
+            app:destination="@id/followerFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
@@ -62,6 +68,32 @@
         <action
             android:id="@+id/action_otherUserFragment_to_myContentFragment"
             app:destination="@id/myContentFragment" />
+        <action
+            android:id="@+id/action_otherUserFragment_to_followingFragment"
+            app:destination="@id/followingFragment" />
+        <action
+            android:id="@+id/action_otherUserFragment_to_followerFragment"
+            app:destination="@id/followerFragment" />
+        <action
+            android:id="@+id/action_otherUserFragment_to_followerFragment2"
+            app:destination="@id/followerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/followingFragment"
+        android:name="com.example.android_sns_project.FollowingFragment"
+        tools:layout="@layout/fragment_following" >
+        <action
+            android:id="@+id/action_followingFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/followerFragment"
+        android:name="com.example.android_sns_project.FollowerFragment"
+        android:label="fragment_follower"
+        tools:layout="@layout/fragment_follower" >
+        <action
+            android:id="@+id/action_followerFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment" />
     </fragment>
 
 </navigation>
