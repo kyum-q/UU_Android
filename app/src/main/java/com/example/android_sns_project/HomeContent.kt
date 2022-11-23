@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,32 +22,38 @@ class HomeContent {
     val rootRef = Firebase.storage.reference
     var id:String = ""
     var userID:String = "kyun_q"
+    var emailInfo:String = "kyun_q"
     var likeClick: Boolean = false
     private var commentButton: ImageButton
-    private var userImageButton: ImageButton
+    private var likeButton: ImageButton
+    var userImageButton: ImageButton
+    val likeDescription: TextView
     @SuppressLint("SetTextI18n", "InflateParams")
     constructor(context: Context?, d: DocumentSnapshot)  {
 
         id = d.id
-        val conteentUserID = d["userId"].toString()
+        emailInfo = d["userId"].toString()
 
         //추가할 커스텀 레이아웃 가져오기
         val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         customLayout = layoutInflater.inflate(R.layout.home_content, null)
 
-
+        val userInfo = db.collection("UserInfo").document(emailInfo)
 
         //커스텀 레이아웃 내부 뷰 접근
-        val userName: TextView = customLayout.findViewById<TextView>(R.id.userID)
-        userName.text =conteentUserID
-        val userName2: TextView = customLayout.findViewById<TextView>(R.id.userID2)
-        userName2.text = conteentUserID
+        userInfo.get().addOnSuccessListener {
+            val userName: TextView = customLayout.findViewById<TextView>(R.id.userID)
+            userName.text = it["nickname"].toString()
+            val userName2: TextView = customLayout.findViewById<TextView>(R.id.userID2)
+            userName2.text = it["nickname"].toString()
+        }
+
         val explain: TextView = customLayout.findViewById<TextView>(R.id.explain)
         explain.text = d["explain"].toString()
-        val likeDescription: TextView = customLayout.findViewById<TextView>(R.id.likeDescription)
+        likeDescription = customLayout.findViewById<TextView>(R.id.likeDescription)
         likeDescription.text = "${d["likeCount"].toString()}명이 좋아합니다"
 
-        val likeButton: ImageButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
+        likeButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
         userImageButton = customLayout.findViewById<ImageButton>(R.id.userImage)
 //        userImage.setOnClickListener{
 //            MainActivity().changeFragment( d["email"].toString())
@@ -61,20 +68,6 @@ class HomeContent {
                     likeClick = true
                 }
         }
-
-
-        likeButton.setOnClickListener {
-            if (likeClick == false) {
-                likeButton.setImageResource(R.drawable.heart_click_icon)
-                setLikeCount(likeDescription, 1)
-                likeClick = true
-            } else {
-                setLikeCount(likeDescription, -1)
-                likeButton.setImageResource(R.drawable.heart_icon)
-                likeClick = false
-            }
-        }
-
         commentButton = customLayout.findViewById<ImageButton>(R.id.commentButton)
 
         // 이미지 알아내기
@@ -93,6 +86,18 @@ class HomeContent {
         }
     }
 
+    fun setLike() {
+        if (likeClick == false) {
+            likeButton.setImageResource(R.drawable.heart_click_icon)
+            setLikeCount(likeDescription, 1)
+            likeClick = true
+        } else {
+            setLikeCount(likeDescription, -1)
+            likeButton.setImageResource(R.drawable.heart_icon)
+            likeClick = false
+        }
+    }
+
     public fun getLayout(): View {
         return customLayout
     }
@@ -101,12 +106,24 @@ class HomeContent {
         return commentButton
     }
 
+    public fun getLikeButton(): ImageButton {
+        return likeButton
+    }
+
     public fun getUserImage() :ImageView {
         return userImageButton
     }
 
     public fun getID() : String {
         return id
+    }
+
+    public fun getEmail() : String {
+        return emailInfo
+    }
+
+    public fun isLikeClick() : Boolean {
+        return likeClick
     }
 
      private fun setLikeCount(likeDescription: TextView, changeCount:Int) {

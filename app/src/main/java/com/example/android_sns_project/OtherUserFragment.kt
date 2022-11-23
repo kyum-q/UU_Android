@@ -199,7 +199,7 @@ class OtherUserFragment : Fragment() {
                     imageView.setOnClickListener {
                         val bundle = Bundle()
                         bundle.putString("id",contentsID[position])
-                        findNavController().navigate(com.example.android_sns_project.R.id.action_userFragment_to_myContentFragment, bundle)
+                        findNavController().navigate(com.example.android_sns_project.R.id.action_otherUserFragment_to_myContentFragment, bundle)
                     }
                 }
             }

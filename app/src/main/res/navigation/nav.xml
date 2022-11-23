@@ -42,7 +42,6 @@
     <activity
         android:id="@+id/postingActivity"
         android:name="com.example.android_sns_project.PostingActivity"
-        android:label="activity_post"
         tools:layout="@layout/activity_post" />
     <fragment
         android:id="@+id/commentFragment"
@@ -51,8 +50,7 @@
     <fragment
         android:id="@+id/myContentFragment"
         android:name="com.example.android_sns_project.MyContentFragment"
-        android:label="fragment_my_content"
-        tools:layout="@layout/fragment_my_content" >
+        tools:layout="@layout/fragment_my_content">
         <action
             android:id="@+id/action_myContentFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
@@ -60,6 +58,10 @@
     <fragment
         android:id="@+id/otherUserFragment"
         android:name="com.example.android_sns_project.OtherUserFragment"
-        tools:layout="@layout/fragment_other_user" />
+        tools:layout="@layout/fragment_other_user" >
+        <action
+            android:id="@+id/action_otherUserFragment_to_myContentFragment"
+            app:destination="@id/myContentFragment" />
+    </fragment>
 
 </navigation>
