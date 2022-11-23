@@ -56,12 +56,6 @@ class MainActivity : AppCompatActivity() {
         ).build()
         NavigationUI.setupActionBarWithNavController(this, nhf.navController, appBarConfig)
 
-        // 권한요청
-        //requestSinglePermission(android.Manifest.permission.POST_NOTIFICATIONS)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
-            createNotificationChannel()
-        }
     }
 
 
@@ -81,17 +75,7 @@ class MainActivity : AppCompatActivity() {
             ?.onActivityResult(requestCode, resultCode, data)
     }
 
-    //메인에서 유저 이미지 누르면 해당 유저로 가는 액티비티 전환
-    fun changeFragment(data: String) {
-        var userFragment = UserFragment()
-        var mainActivityView = MainActivity()
-        var bundle = Bundle()
-        bundle.putString("userId", data)
-        userFragment.arguments = bundle
-        supportFragmentManager.beginTransaction().replace(R.id.fragment, userFragment).commit()
-    }
     //up button 처리하는 함수
-
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.fragment).navigateUp(appbarc) || super.onSupportNavigateUp()
     }
@@ -125,58 +109,6 @@ class MainActivity : AppCompatActivity() {
         }
         return true
     }
-
-    private val channelID = "default"
-
-    private fun showNotification() {
-        val builder = NotificationCompat.Builder(this, channelID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("Notification Title")
-            .setContentText("Notification body")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        NotificationManagerCompat.from(this)
-            .notify(1, builder.build())
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        val channel = NotificationChannel(
-            channelID, "default channel",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        channel.description = "description text of this channel."
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
-
-//    @RequiresApi(Build.VERSION_CODES.M)
-//    private fun requestSinglePermission(permission: String) {
-//        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED)
-//            return
-//        val requestPermLauncher =
-//            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-//                if (it == false) { // permission is not granted!
-//                    AlertDialog.Builder(this).apply {
-//                        setTitle("Warning")
-//                        setMessage("Warning")
-//                    }.show()
-//                }
-//            }
-//        if (shouldShowRequestPermissionRationale(permission)) {
-//// you should explain the reason why this app needs the permission.
-//            AlertDialog.Builder(this).apply {
-//                setTitle("Reason")
-//                setMessage("Reason")
-//                setPositiveButton("Allow") { _, _ -> requestPermLauncher.launch(permission) }
-//                setNegativeButton("Deny") { _, _ -> }
-//            }.show()
-//        } else {
-//// should be called in onCreate()
-//            requestPermLauncher.launch(permission)
-//        }
-//    }
-
 
 }
 
