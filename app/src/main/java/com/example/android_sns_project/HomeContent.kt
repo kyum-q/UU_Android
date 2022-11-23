@@ -3,10 +3,8 @@ package com.example.android_sns_project
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -54,7 +52,7 @@ class HomeContent {
         likeDescription.text = "${d["likeCount"].toString()}명이 좋아합니다"
 
         likeButton = customLayout.findViewById<ImageButton>(R.id.likeButton)
-        userImageButton = customLayout.findViewById<ImageButton>(R.id.userImage)
+        userImageButton = customLayout.findViewById<ImageButton>(R.id.home_profile)
 //        userImage.setOnClickListener{
 //            MainActivity().changeFragment( d["email"].toString())
 //

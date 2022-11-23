@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.android_sns_project.databinding.FragmentCommentBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -14,11 +15,14 @@ class CommentFragment : Fragment() {
     val db = Firebase.firestore
     private var nickname: String = ""
     private var userID: String = ""
-
+    var auth : FirebaseAuth? = null
     lateinit var customLayout: View
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
+
+        auth = FirebaseAuth.getInstance()
+        //auth?.currentUser?.email
 
         binding = FragmentCommentBinding.inflate(inflater, container, false)
         val ID = arguments?.getString("id").toString()
@@ -40,7 +44,7 @@ class CommentFragment : Fragment() {
             val commendMd = md.collection("comments")
             commendMd.get().addOnSuccessListener {
                 for (d in it) {
-                    var comment: HomeComment = HomeComment(context, userID, d["commentText"].toString())
+                    var comment: HomeComment = HomeComment(context, d["commentID"].toString(), d["commentText"].toString())
                     //LienarLayout에 커스텀 레이아웃 추가
                     binding?.commentsLayout?.addView(comment.getLayout())
                 }
@@ -54,13 +58,13 @@ class CommentFragment : Fragment() {
             val commentMd = md.collection("comments")
             commentMd.get().addOnSuccessListener {
                 var commentMap = hashMapOf(
-                    "commentID" to userID,
+                    "commentID" to auth?.currentUser?.email.toString(),
                     "commentText" to commentText
                 )
-                commentMd.document(userID).set(commentMap)
+                commentMd.document().set(commentMap)
             }
 
-            var comment: HomeComment = HomeComment(context, userID,commentText)
+            var comment: HomeComment = HomeComment(context, auth?.currentUser?.email.toString(),commentText)
             binding?.commentsLayout?.addView(comment.getLayout())
             binding?.editText?.setText(" ")
         }

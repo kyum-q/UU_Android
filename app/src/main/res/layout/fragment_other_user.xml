@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="#FFDCDC"
     android:orientation="vertical"
     tools:context=".OtherUserFragment">
-
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/account_profile"
-            app:civ_border_overlay="true"
-            app:civ_border_width="3dp"
-            app:civ_border_color="#000000"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
@@ -24,7 +22,10 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/account"/>
+            android:src="@drawable/profile"
+            app:civ_border_color="@color/transparent"
+            app:civ_border_overlay="true"
+            app:civ_border_width="3dp" />
 
 
         <Button
@@ -34,9 +35,9 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/account_profile"
+            android:background="@color/white"
             android:text="FOLLOW"
-            />
-
+            tools:ignore="TextContrastCheck" />
 
 
         <LinearLayout

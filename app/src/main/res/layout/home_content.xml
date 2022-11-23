@@ -25,7 +25,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/userImage"
+                    android:id="@+id/home_profile"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
@@ -33,7 +33,7 @@
                     android:layout_weight="0"
                     android:background="@color/transparent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/account" />
+                    android:src="@drawable/profile" />
 
                 <TextView
                     android:id="@+id/userID"

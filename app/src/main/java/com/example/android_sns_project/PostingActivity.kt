@@ -177,7 +177,7 @@ class PostingActivity : AppCompatActivity() {
         val storageRef = storage.reference
         val imageRef = storageRef.child("upload_image")?.child(fileName)
 
-        imageRef?.putFile(getImageUri(this, photoBitmap!!)!!)?.addOnSuccessListener {
+        imageRef?.putFile(photoUri!!)?.addOnSuccessListener {
             //Snackbar.make(binding.root, "upload completed.", Snackbar.LENGTH_SHORT).show()
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                //게시물 데이터 객체
