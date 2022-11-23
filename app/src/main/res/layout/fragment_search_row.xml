@@ -3,19 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
     <LinearLayout
         android:id="@+id/comment_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/account_profile"
-            app:civ_border_overlay="true"
-            app:civ_border_width="3dp"
-            app:civ_border_color="@color/profile_border"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
@@ -24,47 +22,52 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:src="@drawable/profile"
+            app:civ_border_color="@color/profile_border"
+            app:civ_border_overlay="true"
+            app:civ_border_width="3dp"
             tools:ignore="MissingClass" />
+
         <TextView
+            android:id="@+id/tvNickname"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Guest"
-            android:textSize="16sp"
-            android:textColor="@color/dark_grey_text"
             android:gravity="center_vertical"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:text="Guest"
+            android:textColor="@color/dark_grey_text"
+            android:textSize="16sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/right_arrow"
             android:layout_alignParentRight="true"
-            />
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/right_arrow" />
 
         <!--        <TextView-->
-<!--            android:id="@+id/comment_id"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:layout_marginBottom="5dp"-->
-<!--            android:text="TextView"-->
-<!--            android:textStyle="bold" />-->
+        <!--            android:id="@+id/comment_id"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:layout_marginBottom="5dp"-->
+        <!--            android:text="TextView"-->
+        <!--            android:textStyle="bold" />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/comment_text"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:layout_marginBottom="5dp"-->
-<!--            android:text="TextView" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/comment_text"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:layout_marginEnd="10dp"-->
+        <!--            android:layout_marginBottom="5dp"-->
+        <!--            android:text="TextView" />-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
