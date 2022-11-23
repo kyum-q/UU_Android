@@ -16,19 +16,22 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.android_sns_project.databinding.FragmentHomeBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
 @Suppress("UNREACHABLE_CODE")
 class HomeFragment : Fragment() {
-    val db = Firebase.firestore
     private var binding: FragmentHomeBinding? = null
+    val db = Firebase.firestore
 
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+
 
         // 1. 레퍼런스 가져오기
         val col = db.collection("content")
