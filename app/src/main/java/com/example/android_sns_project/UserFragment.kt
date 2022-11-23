@@ -161,8 +161,11 @@ class UserFragment : Fragment() {
 
                     //      CoroutineScope(Dispatchers.Main).launch {
                     for(snapshot in snapshot.documents) {
-                        contents.add(snapshot.toObject(Content::class.java)!!)
-                        contentsID.add(snapshot.id)
+                        if(!contents.contains(snapshot.toObject(Content::class.java))){
+                            contents.add(snapshot.toObject(Content::class.java)!!)
+                            contentsID.add(snapshot.id)
+                        }
+
                         Log.d("TAG","전 ${contents.size}")
 
                         notifyDataSetChanged()
@@ -180,11 +183,7 @@ class UserFragment : Fragment() {
             var width = resources.displayMetrics.widthPixels/3
             var imageView = ImageView(parent.context)
             imageView.layoutParams = LinearLayoutCompat.LayoutParams(width,width)
-            /*경미 추가 부분 */
-            imageView.setOnClickListener{
-                Log.d("TAG","클릭 ${contents.size}")
-            }
-            /*경미 추가 부분 */
+
             return MyViewHolder(imageView)
             Log.d("TAG","onCreateViewHolder ${contents.size}")
         }
