@@ -20,6 +20,7 @@ import com.example.android_sns_project.data.Content
 import com.example.android_sns_project.data.UserInfo
 import com.example.android_sns_project.data.UserList
 import com.example.android_sns_project.databinding.ContentItemBinding
+import com.example.android_sns_project.databinding.FragmentFollowingBinding
 import com.example.android_sns_project.databinding.FragmentUserBinding
 import com.example.android_sns_project.databinding.UserListItemBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -35,7 +36,7 @@ class FollowingFragment : Fragment() {
     val rootRef = Firebase.storage.reference
     private var adapter: FollowingFragment.userListAdapter? = null
     private val itemsCollectionRef = db.collection("content")
-    private var binding: FragmentUserBinding? = null
+    private var binding: FragmentFollowingBinding? = null
 
     var auth: FirebaseAuth? = null
     var currentEmail: String? = null
@@ -49,7 +50,7 @@ class FollowingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUserBinding.inflate(inflater, container, false)
+        binding = FragmentFollowingBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         // recyclerview setup
 
@@ -64,7 +65,7 @@ class FollowingFragment : Fragment() {
     inner class MyViewHolder(val binding: UserListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     @SuppressLint("SuspiciousIndentation")
-    inner class userListAdapter : RecyclerView.Adapter<MyViewHolder>() {
+    inner class userListAdapter : RecyclerView.Adapter<FollowingFragment.MyViewHolder>() {
 
         private val itemsCollectionRef = db.collection("content")
         var userInfos: ArrayList<UserInfo> = arrayListOf()
@@ -72,7 +73,9 @@ class FollowingFragment : Fragment() {
         var followingList :  ArrayList<UserInfo> = arrayListOf()
 
         init {
+            Log.d("followList", "생성자 호출")
             db.collection("UserInfo").addSnapshotListener{snapshot, error ->
+
                 if (snapshot == null) return@addSnapshotListener
                 //전체 유저 정보 받아오기
                 for(snapshot in snapshot.documents) {
@@ -88,7 +91,7 @@ class FollowingFragment : Fragment() {
                         }
                     }
                 //팔로잉 리스트에 userInfo 담기
-                currentUserInfo?.followings?.map{(key, value) ->
+                currentUserInfo?.followers?.map{(key, value) ->
                     userInfos.forEach{
                         if(it.email == key){
                             Log.d("followList","followingList${it}" )
