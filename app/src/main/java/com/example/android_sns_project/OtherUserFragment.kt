@@ -79,7 +79,7 @@ class OtherUserFragment : Fragment() {
                 var user = it.toObject(UserInfo::class.java)
                 Log.d("follow", "follow() ${user}")
                 //이미 목록에 존재하면
-                if (user?.followers?.containsKey(userId)!!) {
+                if (user?.followers?.containsKey(auth?.currentUser?.email)!!) {
                     user?.followerCount = user?.followerCount!! - 1
                     user?.followers!!.remove(auth?.currentUser?.email)
                     Log.d("follow", "--() ${user}")

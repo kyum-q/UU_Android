@@ -85,8 +85,8 @@ class UserFragment : Fragment() {
                 //      CoroutineScope(Dispatchers.Main).launch {
                 for (snapshot in snapshot.documents) {
                     userInfo = snapshot.toObject(UserInfo::class.java)
-                    binding!!.followerCount.text = userInfo?.followerCount.toString()
-                    binding!!.followingCount.text = userInfo?.followingCount.toString()
+                    binding!!.followerCount.text = userInfo?.followingCount.toString()
+                    binding!!.followingCount.text = userInfo?.followerCount.toString()
                 }
 
                 //   }
