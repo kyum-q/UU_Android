@@ -96,7 +96,7 @@ class OtherUserFragment : Fragment() {
             bundle.putString("email",userId)
             findNavController().navigate(R.id.action_otherUserFragment_to_followerFragment2,bundle)
         }
-
+        follwerUpdate()
         return binding?.root
     }
 
@@ -154,11 +154,11 @@ class OtherUserFragment : Fragment() {
                 //해당 유저를 팔로우 했다면 언팔로우 버튼으로
                 if(user.followers.containsKey(auth?.currentUser?.email)){
 
-                    binding!!.accountBtnFollow.text = "unfollow"
+                    binding!!.accountBtnFollow.text = "언팔로우"
                     //binding!!.accountBtnFollow.setBackgroundColor(context.resources.getColor(R.id.))
                     binding!!.accountBtnFollow.width = 130
                 }else{
-                    binding!!.accountBtnFollow.text = "follow"
+                    binding!!.accountBtnFollow.text = "팔로우"
                     binding!!.accountBtnFollow.width = 100
                 }
             }
