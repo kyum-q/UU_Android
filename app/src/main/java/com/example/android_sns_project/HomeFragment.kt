@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
                 content.getLikeButton().setOnClickListener {
                     if(!content.isLikeClick()) {
                         //showNotification("kyum_q")  // 알림 시작
-                        FcmPush.instance.sendMessage(content.getEmail(), myNickname+"님이 당신의 게시물을 좋아합니다","♥")
+                        FcmPush.instance.sendMessage(content.getEmail(), myNickname+"님이 당신의 게시물을 좋아합니다","♥", myNickname)
                     }
                     content.setLike()
                 }

@@ -35,7 +35,7 @@ class FcmPush {
         auth = FirebaseAuth.getInstance()
         //auth?.currentUser?.email
     }
-    fun sendMessage(destinationUid: String, title: String, message: String){
+    fun sendMessage(destinationUid: String, title: String, message: String, nickName: String){
         FirebaseFirestore.getInstance().collection("pushTokens").document(destinationUid).get().addOnSuccessListener {
             val token = it["pushToken"].toString()
             println("Token #### "+token)
@@ -44,25 +44,17 @@ class FcmPush {
             pushDTO.notification.title = title
             pushDTO.notification.body = message
 
+            // firebase 데이터 삽입
             val uid = auth?.currentUser?.email.toString()
 
-            val md = db.collection("notifications").document(uid)
-            md.get().addOnSuccessListener {
-                var messagingMap = hashMapOf(
+            var messagingMap = hashMapOf(
                     "title" to title,
-                    "message" to message
+                    "message" to message,
+                    "nickName" to nickName
                 )
-                md.update(messagingMap as Map<String, Any>)
-                println("%%%%%%%%%%%%%%%% Success")
-            }
-            md.get().addOnFailureListener {
-                var messagingMap = hashMapOf(
-                    "title" to title,
-                    "message" to message
-                )
-                println("%%%%%%%%%%%%%%%% Failuree")
-                FirebaseFirestore.getInstance().collection("notifications").document(uid).set(messagingMap)
-            }
+                FirebaseFirestore.getInstance().collection("notifications").document(uid)
+                    .collection("messaging").document().set(messagingMap)
+
 
             var body :RequestBody = RequestBody.create(JSON, gson?.toJson(pushDTO)!!)
             var request = Request.Builder()

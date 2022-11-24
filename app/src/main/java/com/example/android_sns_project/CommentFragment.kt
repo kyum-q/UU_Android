@@ -68,7 +68,7 @@ class CommentFragment : Fragment() {
             binding?.commentLayout?.addView(comment.getLayout())
             binding?.editText?.setText(" ")
 
-            FcmPush.instance.sendMessage(userID, nickname+"님이 당신의 게시물에 댓글을 달았습니다", commentText)
+            FcmPush.instance.sendMessage(userID, nickname+"님이 당신의 게시물에 댓글을 달았습니다", commentText, nickname)
         }
 
 
