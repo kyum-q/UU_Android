@@ -1,5 +1,6 @@
 package com.example.android_sns_project
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +19,9 @@ class CommentFragment : Fragment() {
     var auth : FirebaseAuth? = null
     lateinit var customLayout: View
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+    @SuppressLint("SuspiciousIndentation")
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
         auth = FirebaseAuth.getInstance()
         //auth?.currentUser?.email
@@ -68,7 +70,7 @@ class CommentFragment : Fragment() {
             binding?.commentLayout?.addView(comment.getLayout())
             binding?.editText?.setText(" ")
             if(!comment.getEmail().equals(auth?.currentUser?.email))
-            FcmPush.instance.sendMessage(userID, "님이 당신의 게시물에 댓글을 달았습니다", commentText, nickname)
+                FcmPush.instance.sendMessage(userID, "님이 당신의 게시물에 댓글을 달았습니다", commentText, nickname)
         }
 
 

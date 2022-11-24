@@ -28,11 +28,13 @@ import com.google.firebase.messaging.FirebaseMessaging
 class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
     val db = Firebase.firestore
-    var auth : FirebaseAuth? = null
+    var auth: FirebaseAuth? = null
     lateinit var mainActivity: MainActivity
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         auth = FirebaseAuth.getInstance()
         //auth?.currentUser?.email
@@ -45,44 +47,64 @@ class HomeFragment : Fragment() {
             myNickname = it["nickname"].toString()
         }
 
-        println("################# followings : ")
+        println("################# followings : "+follwings)
 
         // 1. 레퍼런스 가져오기
         val col = db.collection("content")
 
         // 2. 접근하기 (읽기, 쓰기)
         col.get().addOnSuccessListener {
-            for(d in it){
-                var content:HomeContent = HomeContent(context, d)
-                //LienarLayout에 커스텀 레이아웃 추가
-                binding?.scrollLayout?.addView(content.getLayout())
+            for (d in it) {
+                var f = follwings.containsValue(d["userId"])
+                println("############ "+f+" : "+d["userId"])
+                if (f) {
+                    var content: HomeContent = HomeContent(context, d)
+                    //LienarLayout에 커스텀 레이아웃 추가
+                    binding?.scrollLayout?.addView(content.getLayout())
 
-                // 댓글 창 클릭시 댓글 fragment로 이동
-                content.getCommentButton().setOnClickListener {
-                    val bundle = Bundle()
-                    bundle.putString("id",content.getID())
-                    findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_commentFragment, bundle)
+                    // 댓글 창 클릭시 댓글 fragment로 이동
+                    content.getCommentButton().setOnClickListener {
+                        val bundle = Bundle()
+                        bundle.putString("id", content.getID())
+                        findNavController().navigate(
+                            com.example.android_sns_project.R.id.action_homeFragment_to_commentFragment,
+                            bundle
+                        )
 
-                }
-
-                // 유저 사진 클릭시 유저 frament로 이동
-                content.getUserImage().setOnClickListener {
-
-                    val bundle = Bundle()
-                    bundle.putString("email",content.getEmail())
-                    if(content.getEmail().equals(auth?.currentUser?.email)){
-                        findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_userFragment, bundle)
-                    }else{
-                        findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_otherUserFragment, bundle)
                     }
-                }
 
-                // like 클릭시 알림 띄우기 (좋아요 true 일때만)
-                content.getLikeButton().setOnClickListener {
-                    if(!content.isLikeClick() && !content.getEmail().equals(auth?.currentUser?.email)) {
-                        FcmPush.instance.sendMessage(content.getEmail(), "님이 당신의 게시물을 좋아합니다","♥", myNickname)
+                    // 유저 사진 클릭시 유저 frament로 이동
+                    content.getUserImage().setOnClickListener {
+
+                        val bundle = Bundle()
+                        bundle.putString("email", content.getEmail())
+                        if (content.getEmail().equals(auth?.currentUser?.email)) {
+                            findNavController().navigate(
+                                com.example.android_sns_project.R.id.action_homeFragment_to_userFragment,
+                                bundle
+                            )
+                        } else {
+                            findNavController().navigate(
+                                com.example.android_sns_project.R.id.action_homeFragment_to_otherUserFragment,
+                                bundle
+                            )
+                        }
                     }
-                    content.setLike()
+
+                    // like 클릭시 알림 띄우기 (좋아요 true 일때만)
+                    content.getLikeButton().setOnClickListener {
+                        if (!content.isLikeClick() && !content.getEmail()
+                                .equals(auth?.currentUser?.email)
+                        ) {
+                            FcmPush.instance.sendMessage(
+                                content.getEmail(),
+                                "님이 당신의 게시물을 좋아합니다",
+                                "♥",
+                                myNickname
+                            )
+                        }
+                        content.setLike()
+                    }
                 }
             }
         }

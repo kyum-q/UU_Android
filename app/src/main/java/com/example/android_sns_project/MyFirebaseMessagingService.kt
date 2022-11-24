@@ -13,6 +13,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.android_sns_project.MainActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -33,6 +35,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token : $token")
         super.onNewToken(token)
+        var auth : FirebaseAuth? = null
+        auth = FirebaseAuth.getInstance()
+        val uid = auth?.currentUser?.email
+        val map = mutableMapOf<String, Any>()
+        map["pushToken"] = token!!
+
+        FirebaseFirestore.getInstance().collection("pushTokens").document(uid!!).set(map)
     }
 
 
@@ -56,16 +65,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
             createNotificationChannel(title, body)
         }
-        val builder = NotificationCompat.Builder(this, channelID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(title)
-            .setContentText(body)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        NotificationManagerCompat.from(this)
-            .notify(NotificationNum, builder.build())
-
-        NotificationNum++
-
 
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -74,7 +73,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        val channelId = "my_channel"
+        val builder = NotificationCompat.Builder(this, channelID)
+            .setSmallIcon(R.drawable.heart_click_icon)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        NotificationManagerCompat.from(this)
+            .notify(NotificationNum, builder.build())
+
+        NotificationNum++
+/*
+
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
@@ -83,21 +92,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.app_icon)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
-
+*/
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // 오레오 버전 예외처리
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
+                channelID,
                 "Channel human readable title",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(0 /* ID of notification */, builder.build())
     }
 
 }

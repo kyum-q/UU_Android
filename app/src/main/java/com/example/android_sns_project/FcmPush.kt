@@ -43,8 +43,8 @@ class FcmPush {
             println("Token #### "+token)
             var pushDTO = PushDTO()
             pushDTO.to = token
-            pushDTO.notification.title = title
-            pushDTO.notification.body = nickName+message
+            pushDTO.notification.title = nickName+title
+            pushDTO.notification.body = message
 
             var messagingMap = hashMapOf(
                     "title" to title,
