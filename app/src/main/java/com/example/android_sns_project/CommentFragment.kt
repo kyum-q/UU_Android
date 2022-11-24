@@ -46,7 +46,7 @@ class CommentFragment : Fragment() {
                 for (d in it) {
                     var comment: HomeComment = HomeComment(context, d["commentID"].toString(), d["commentText"].toString())
                     //LienarLayout에 커스텀 레이아웃 추가
-                    binding?.commentsLayout?.addView(comment.getLayout())
+                    binding?.commentLayout?.addView(comment.getLayout())
                 }
             }
         }
@@ -65,8 +65,10 @@ class CommentFragment : Fragment() {
             }
 
             var comment: HomeComment = HomeComment(context, auth?.currentUser?.email.toString(),commentText)
-            binding?.commentsLayout?.addView(comment.getLayout())
+            binding?.commentLayout?.addView(comment.getLayout())
             binding?.editText?.setText(" ")
+
+            FcmPush.instance.sendMessage(userID, nickname+"님이 당신의 게시물에 댓글을 달았습니다", commentText, nickname)
         }
 
 
