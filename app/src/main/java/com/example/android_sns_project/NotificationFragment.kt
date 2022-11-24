@@ -1,11 +1,12 @@
 package com.example.android_sns_project
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.android_sns_project.databinding.FragmentCommentBinding
+import android.widget.TextView
 import com.example.android_sns_project.databinding.FragmentNotificationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -16,37 +17,36 @@ class NotificationFragment : Fragment() {
     val db = Firebase.firestore
     private var nickname: String = ""
     private var userID: String = ""
-    var auth : FirebaseAuth? = null
+    var auth: FirebaseAuth? = null
     lateinit var customLayout: View
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
-                               savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         auth = FirebaseAuth.getInstance()
-        //auth?.currentUser?.email
+        val email = auth?.currentUser?.email.toString()
 
         binding = FragmentNotificationBinding.inflate(inflater, container, false)
-        val ID = arguments?.getString("id").toString()
-        // 해당 레퍼런스 가져오기
-        val md = db.collection("content").document(ID)
+
+        val md = db.collection("notifications").document(email).collection("messaging")
 
         md.get().addOnSuccessListener {
-            userID = it["userId"].toString()
-            val userInfo = db.collection("UserInfo").document(userID)
+            for (d in it) {
+                //추가할 커스텀 레이아웃 가져오기
+                val layoutInflater =
+                    context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                customLayout = layoutInflater.inflate(R.layout.notifications, null)
 
-            //커스텀 레이아웃 내부 뷰 접근
-            userInfo.get().addOnSuccessListener {
-                nickname = it["nickname"].toString()
+                val title: TextView = customLayout.findViewById<TextView>(R.id.title)
+                title.text = d["title"].toString()
+                val body: TextView = customLayout.findViewById<TextView>(R.id.body)
+                body.text = d["message"].toString()
+
+                binding?.notificationLayout?.addView(customLayout)
             }
 
-            val commendMd = md.collection("comments")
-            commendMd.get().addOnSuccessListener {
-                for (d in it) {
-                    var comment: HomeComment = HomeComment(context, d["commentID"].toString(), d["commentText"].toString())
-                    //LienarLayout에 커스텀 레이아웃 추가
-                    binding?.notificationLayout?.addView(comment.getLayout())
-                }
-            }
         }
 
         return binding?.root

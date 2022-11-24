@@ -1,5 +1,6 @@
 package com.example.android_sns_project
 
+import android.annotation.SuppressLint
 import android.icu.text.CaseMap.Title
 import com.example.android_sns_project.data.PushDTO
 import com.google.common.net.MediaType
@@ -35,6 +36,7 @@ class FcmPush {
         auth = FirebaseAuth.getInstance()
         //auth?.currentUser?.email
     }
+    @SuppressLint("SuspiciousIndentation")
     fun sendMessage(destinationUid: String, title: String, message: String, nickName: String){
         FirebaseFirestore.getInstance().collection("pushTokens").document(destinationUid).get().addOnSuccessListener {
             val token = it["pushToken"].toString()

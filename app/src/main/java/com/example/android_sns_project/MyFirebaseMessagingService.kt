@@ -1,5 +1,6 @@
 package com.example.android_sns_project
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -51,6 +52,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     // 받은 알림을 기기에 표시하는 메서드
+    @SuppressLint("UnspecifiedImmutableFlag")
     public fun sendNotification(title: String?, body: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
             createNotificationChannel(title, body)
@@ -70,7 +72,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_IMMUTABLE
         )
 
         val channelId = "my_channel"

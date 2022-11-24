@@ -38,8 +38,4 @@ class HomeComment {
         return customLayout
     }
 
-    public fun addComment() {
-
-    }
-
 }
