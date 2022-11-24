@@ -3,7 +3,9 @@ package com.example.android_sns_project
 import android.icu.text.CaseMap.Title
 import com.example.android_sns_project.data.PushDTO
 import com.google.common.net.MediaType
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -20,6 +22,9 @@ class FcmPush {
     var serverKey = "AAAAMfnF5yg:APA91bGLcoWjChsQAWzjoi8-nyKzeYIJWp951ZaIY2IGXBULIvUxDZSy3BHvwtK4GYLz1H49V-zWm6_I7-I8zAHuj9-ekf4QkUeEDJB7l_YRaq-UmNdnHnsrx1HbnGvPwW-Y02_WEPDb"
     var gson: Gson ?= null
     var okHttpClient : OkHttpClient ?= null
+
+    val db = Firebase.firestore
+    var auth : FirebaseAuth? = null
     companion object{
         var instance = FcmPush()
     }
@@ -27,6 +32,8 @@ class FcmPush {
     init {
         gson = Gson()
         okHttpClient = OkHttpClient()
+        auth = FirebaseAuth.getInstance()
+        //auth?.currentUser?.email
     }
     fun sendMessage(destinationUid: String, title: String, message: String){
         FirebaseFirestore.getInstance().collection("pushTokens").document(destinationUid).get().addOnSuccessListener {
@@ -36,6 +43,26 @@ class FcmPush {
             pushDTO.to = token
             pushDTO.notification.title = title
             pushDTO.notification.body = message
+
+            val uid = auth?.currentUser?.email.toString()
+
+            val md = db.collection("notifications").document(uid)
+            md.get().addOnSuccessListener {
+                var messagingMap = hashMapOf(
+                    "title" to title,
+                    "message" to message
+                )
+                md.update(messagingMap as Map<String, Any>)
+                println("%%%%%%%%%%%%%%%% Success")
+            }
+            md.get().addOnFailureListener {
+                var messagingMap = hashMapOf(
+                    "title" to title,
+                    "message" to message
+                )
+                println("%%%%%%%%%%%%%%%% Failuree")
+                FirebaseFirestore.getInstance().collection("notifications").document(uid).set(messagingMap)
+            }
 
             var body :RequestBody = RequestBody.create(JSON, gson?.toJson(pushDTO)!!)
             var request = Request.Builder()
@@ -53,7 +80,10 @@ class FcmPush {
 
                 override fun onResponse(call: Call, response: Response) {
                     println(response.body.toString())
-                    println("$$$$$$$$ sucess")
+                    println("$$$$$$$$ success")
+
+
+
                 }
             })
         }

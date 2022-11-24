@@ -62,6 +62,7 @@ class HomeFragment : Fragment() {
                     val bundle = Bundle()
                     bundle.putString("id",content.getID())
                     findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_commentFragment, bundle)
+
                 }
 
                 // 유저 사진 클릭시 유저 frament로 이동
@@ -80,7 +81,7 @@ class HomeFragment : Fragment() {
                 content.getLikeButton().setOnClickListener {
                     if(!content.isLikeClick()) {
                         //showNotification("kyum_q")  // 알림 시작
-                        FcmPush.instance.sendMessage(content.getEmail(), myNickname+"님이 당신의 게시물을 좋아합니다","좋아요")
+                        FcmPush.instance.sendMessage(content.getEmail(), myNickname+"님이 당신의 게시물을 좋아합니다","♥")
                     }
                     content.setLike()
                 }
@@ -92,9 +93,7 @@ class HomeFragment : Fragment() {
 
         return binding?.root
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
-            createNotificationChannel()
-        }
+
     }
 
     override fun onAttach(context: Context) {
@@ -103,16 +102,5 @@ class HomeFragment : Fragment() {
         mainActivity = context as MainActivity
     }
 
-    private val channelID = "default"
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        val channel = NotificationChannel(
-            channelID, "default channel",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        channel.description = "description text of this channel."
-        val notificationManager = mainActivity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
 }
