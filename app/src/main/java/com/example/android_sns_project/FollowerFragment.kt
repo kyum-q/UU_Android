@@ -74,6 +74,8 @@ class FollowerFragment : Fragment() {
         //현재 로그인한 userInfo
         var userInfo : UserInfo? = null;
         var followerList :  ArrayList<UserInfo> = arrayListOf()
+        var  followerEmailList : ArrayList<String> = arrayListOf()
+        var emailList : ArrayList<String> = arrayListOf()
 
         init {
             db.collection("UserInfo").addSnapshotListener{snapshot, error ->
@@ -82,10 +84,14 @@ class FollowerFragment : Fragment() {
                 //전체 유저 정보 받아오기
                 for(snapshot in snapshot.documents) {
                     var userInfo = snapshot.toObject(UserInfo::class.java)
-                   // userInfos.forEach
-                    if(!userInfos.contains(userInfo!!)){
+
+                    if(!emailList.contains(userInfo?.email!!)){
                         userInfos.add(userInfo)
+                        emailList.add(userInfo.email!!)
                     }
+//                    if(!userInfos.contans(iuserInfo!!)){
+//                        userInfos.add(userInfo)
+//                    }
 
                 }
                 userInfos.forEach {
@@ -101,8 +107,12 @@ class FollowerFragment : Fragment() {
                 currentUserInfo?.followers?.map{(key, value) ->
                     userInfos.forEach{
                         if(it.email == key){
-                            Log.d("followList","followingList${it}" )
-                            followerList.add(it)
+                            if(!followerEmailList.contains(it.email)){
+                                Log.d("followList","followingList${it}" )
+                                followerList.add(it)
+                                followerEmailList.add(it.email!!)
+                            }
+
                         }
                     }
                 }
@@ -130,39 +140,58 @@ class FollowerFragment : Fragment() {
             }
             //본인이라면 팔로우 버튼 hidden처리
             if(item.email == auth?.currentUser?.email){
-                holder.binding.accountBtnFollow.setVisibility(View.GONE)
+                holder.binding.accountBtnFollow.setVisibility(View.INVISIBLE)
             }
             //본인이 팔로우한 유저라면 button에 following 표시
-            Log.d("followList", "userInfo : ${userInfo}")
-            if(userInfo?.followings?.containsKey(item.email!!)!!){
-                holder.binding.accountBtnFollow.text = "팔로잉"
-            }else{
-                holder.binding.accountBtnFollow.text = "팔로워"
+            db.collection("UserInfo").document(auth?.currentUser?.email!!)
+                .addSnapshotListener { snapshot, error ->
+                if (snapshot == null) return@addSnapshotListener
+
+                userInfo = snapshot.toObject(UserInfo::class.java)
+                if(userInfo?.followings?.containsKey(item.email)!!){
+                    holder.binding.accountBtnFollow.text = "언팔로우"
+                }else{
+                    holder.binding.accountBtnFollow.text = "팔로우"
+                }
             }
+
             holder.binding.accountBtnFollow.setOnClickListener {
-                //팔로우 이벤트
-                //이미 목록에 존재하면
-                if (userInfo?.followers?.containsKey(item.email)!!) {
-                    userInfo?.followerCount = userInfo?.followerCount!! - 1
-                    userInfo?.followers!!.remove(item.email)
+                db.collection("UserInfo").document(userInfo?.email.toString())
+                    .get().addOnSuccessListener {
+                        var userInfo2 = it.toObject(UserInfo::class.java)
+                        //팔로우 이벤트
+                        //이미 목록에 존재하면
+                        if (userInfo2?.followings?.containsKey(item.email)!!) {
+                            userInfo2?.followingCount = userInfo2?.followingCount!! - 1
+                            userInfo2?.followings!!.remove(item.email)
+                            holder.binding.accountBtnFollow.text = "팔로우"
 
-                } else {
-                    userInfo?.followerCount = userInfo?.followerCount!! + 1
-                    Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
-                    userInfo?.followers!![item.email.toString()] = true
-                }
-                db.collection("UserInfo").document(userInfo?.email.toString()).set(userInfo!!)
-                //팔로잉 이벤트
-                if (item?.followings?.containsKey(userInfo?.email)!!) {
-                    item?.followingCount = item?.followingCount!! - 1
-                    item?.followings!!.remove(userInfo?.email)
+                        } else {
+                            userInfo2?.followingCount = userInfo2?.followingCount!! + 1
+                            Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
+                            userInfo2?.followings!![item.email.toString()] = true
+                            holder.binding.accountBtnFollow.text = "언팔로우"
+                        }
+                        userInfo = userInfo2
+                        db.collection("UserInfo").document(userInfo?.email.toString()).set(userInfo!!)
+                    }
 
-                } else {
-                    item?.followingCount = item?.followingCount!! + 1
-                    Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
-                    item?.followings!![userInfo?.email!!] = true
-                }
-                db.collection("UserInfo").document(item?.email.toString()).set(item!!)
+
+                db.collection("UserInfo").document(item?.email.toString())
+                    .get().addOnSuccessListener {
+                        var item = it.toObject(UserInfo::class.java)
+                        //팔로잉 이벤트
+                        if (item?.followers?.containsKey(userInfo?.email)!!) {
+                            item?.followerCount = item?.followerCount!! - 1
+                            item?.followers!!.remove(userInfo?.email)
+                        } else {
+                            item?.followerCount = item?.followerCount!! + 1
+                            Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
+                            item?.followers!![userInfo?.email!!] = true
+                        }
+                        db.collection("UserInfo").document(item?.email.toString()).set(item!!)
+                    }
+
             }
 
 
