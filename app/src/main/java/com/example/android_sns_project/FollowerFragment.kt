@@ -54,9 +54,7 @@ class FollowerFragment : Fragment() {
         binding = FragmentFollowerBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         // recyclerview setup
-
         currentEmail = arguments?.getString("email")
-
         binding!!.recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter = userFollowerAdapter()
         binding!!.recyclerView.adapter = adapter
@@ -71,25 +69,32 @@ class FollowerFragment : Fragment() {
 
         private val itemsCollectionRef = db.collection("content")
         var userInfos: ArrayList<UserInfo> = arrayListOf()
+        //해당 페이지로 넘어온 user 정보
         var currentUserInfo : UserInfo? = null;
+        //현재 로그인한 userInfo
+        var userInfo : UserInfo? = null;
         var followerList :  ArrayList<UserInfo> = arrayListOf()
 
         init {
-            Log.d("followList", "생성자 호출")
             db.collection("UserInfo").addSnapshotListener{snapshot, error ->
 
                 if (snapshot == null) return@addSnapshotListener
                 //전체 유저 정보 받아오기
                 for(snapshot in snapshot.documents) {
                     var userInfo = snapshot.toObject(UserInfo::class.java)
+                   // userInfos.forEach
                     if(!userInfos.contains(userInfo!!)){
                         userInfos.add(userInfo)
                     }
+
                 }
                 userInfos.forEach {
                     if(it.email == currentEmail ){
                         //현재 유저의 팔로잉 리스트
                         currentUserInfo = it
+                    }
+                    if(it.email == auth?.currentUser?.email){
+                        userInfo  = it
                     }
                 }
                 //팔로잉 리스트에 userInfo 담기
@@ -123,11 +128,50 @@ class FollowerFragment : Fragment() {
                 bundle.putString("email", item.email)
                 findNavController().navigate(R.id.action_followerFragment_to_otherUserFragment,bundle)
             }
+            //본인이라면 팔로우 버튼 hidden처리
+            if(item.email == auth?.currentUser?.email){
+                holder.binding.accountBtnFollow.setVisibility(View.GONE)
+            }
+            //본인이 팔로우한 유저라면 button에 following 표시
+            Log.d("followList", "userInfo : ${userInfo}")
+            if(userInfo?.followings?.containsKey(item.email!!)!!){
+                holder.binding.accountBtnFollow.text = "팔로잉"
+            }else{
+                holder.binding.accountBtnFollow.text = "팔로워"
+            }
+            holder.binding.accountBtnFollow.setOnClickListener {
+                //팔로우 이벤트
+                //이미 목록에 존재하면
+                if (userInfo?.followers?.containsKey(item.email)!!) {
+                    userInfo?.followerCount = userInfo?.followerCount!! - 1
+                    userInfo?.followers!!.remove(item.email)
+
+                } else {
+                    userInfo?.followerCount = userInfo?.followerCount!! + 1
+                    Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
+                    userInfo?.followers!![item.email.toString()] = true
+                }
+                db.collection("UserInfo").document(userInfo?.email.toString()).set(userInfo!!)
+                //팔로잉 이벤트
+                if (item?.followings?.containsKey(userInfo?.email)!!) {
+                    item?.followingCount = item?.followingCount!! - 1
+                    item?.followings!!.remove(userInfo?.email)
+
+                } else {
+                    item?.followingCount = item?.followingCount!! + 1
+                    Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
+                    item?.followings!![userInfo?.email!!] = true
+                }
+                db.collection("UserInfo").document(item?.email.toString()).set(item!!)
+            }
+
 
         }
 
         override fun getItemCount(): Int {
             return followerList.size
         }
+
     }
+
 }

@@ -96,7 +96,7 @@ class OtherUserFragment : Fragment() {
             bundle.putString("email",userId)
             findNavController().navigate(R.id.action_otherUserFragment_to_followerFragment2,bundle)
         }
-
+        follwerUpdate()
         return binding?.root
     }
 
