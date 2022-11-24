@@ -16,6 +16,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class MyFirebaseMessagingService: FirebaseMessagingService()
 {
+    private var NotificationNum:Int = 0
     private val TAG: String = this.javaClass.simpleName
 
     // 실행 중이라면 호출해서 메시지 확인
@@ -50,7 +51,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService()
             .setContentText(body)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         NotificationManagerCompat.from(this)
-            .notify(1, builder.build())
+            .notify(NotificationNum, builder.build())
+
+        NotificationNum++
 
         /*
         val intent = Intent(this, MainActivity::class.java)

@@ -19,16 +19,25 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.example.android_sns_project.databinding.ActivityMainBinding
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.ktx.remoteMessage
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appbarc: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     var userFragment: UserFragment? = null
+    var auth : FirebaseAuth? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = FirebaseAuth.getInstance()
+        //auth?.currentUser?.email
 
         settingToolBar()
 
@@ -61,21 +70,23 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, nhf.navController, appBarConfig)
 
         getFCMToken()
-        
+
         }
     private fun getFCMToken(): String?{
         var token: String? = null
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                println( "Fetching FCM registration token failed")
-                return@OnCompleteListener
-            }
 
             // Get new FCM registration token
             token = task.result
 
             // Log and toast
             println( "FCM Token is ${token}")
+
+            val uid = auth?.currentUser?.email
+            val map = mutableMapOf<String, Any>()
+            map["pushToken"] = token!!
+
+            FirebaseFirestore.getInstance().collection("pushTokens").document(uid!!).set(map)
         })
 
         return token
@@ -139,7 +150,10 @@ class MainActivity : AppCompatActivity() {
         NotificationManager.IMPORTANCE_DEFAULT
     )
 
-
+    override fun onStop() {
+        super.onStop()
+        //FcmPush.instance.sendMessage("00vMQD4K1mhjOI3FbelZpPndhcC2", "hi","test")
+    }
 }
 
 

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_otherUserFragment"
             app:destination="@id/otherUserFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -89,8 +92,7 @@
     <fragment
         android:id="@+id/followerFragment"
         android:name="com.example.android_sns_project.FollowerFragment"
-        android:label="fragment_follower"
-        tools:layout="@layout/fragment_follower" >
+        tools:layout="@layout/fragment_follower">
         <action
             android:id="@+id/action_followerFragment_to_otherUserFragment"
             app:destination="@id/otherUserFragment" />

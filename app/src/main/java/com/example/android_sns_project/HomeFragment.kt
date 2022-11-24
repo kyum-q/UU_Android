@@ -28,13 +28,24 @@ import com.google.firebase.messaging.FirebaseMessaging
 class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
     val db = Firebase.firestore
-
+    var auth : FirebaseAuth? = null
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
+        auth = FirebaseAuth.getInstance()
+        //auth?.currentUser?.email
+        val myEmail = auth?.currentUser?.email.toString()
+        var follwings: HashMap<String, Boolean>
+        var myNickname = ""
+        val userInfo = db.collection("UserInfo").document(myEmail)
+        userInfo.get().addOnSuccessListener {
+            follwings = it["followings"] as HashMap<String, Boolean>
+            myNickname = it["nickname"].toString()
+        }
 
+        println("################# followings : ")
 
         // 1. 레퍼런스 가져오기
         val col = db.collection("content")
@@ -56,17 +67,20 @@ class HomeFragment : Fragment() {
                 // 유저 사진 클릭시 유저 frament로 이동
                 content.getUserImage().setOnClickListener {
 
-
                     val bundle = Bundle()
                     bundle.putString("email",content.getEmail())
-                    findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_otherUserFragment, bundle)
+                    if(content.getEmail().equals(auth?.currentUser?.email)){
+                        findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_userFragment, bundle)
+                    }else{
+                        findNavController().navigate(com.example.android_sns_project.R.id.action_homeFragment_to_otherUserFragment, bundle)
+                    }
                 }
 
                 // like 클릭시 알림 띄우기 (좋아요 true 일때만)
                 content.getLikeButton().setOnClickListener {
                     if(!content.isLikeClick()) {
                         //showNotification("kyum_q")  // 알림 시작
-
+                        FcmPush.instance.sendMessage(content.getEmail(), myNickname+"님이 당신의 게시물을 좋아합니다","좋아요")
                     }
                     content.setLike()
                 }
@@ -81,7 +95,6 @@ class HomeFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
             createNotificationChannel()
         }
-
     }
 
     override fun onAttach(context: Context) {
@@ -91,16 +104,6 @@ class HomeFragment : Fragment() {
     }
 
     private val channelID = "default"
-
-    private fun showNotification(nickname:String) {
-        val builder = NotificationCompat.Builder(mainActivity, channelID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(nickname+"가 당신의 게시글을 좋아합니다")
-            .setContentText("좋아요")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        NotificationManagerCompat.from(mainActivity)
-            .notify(1, builder.build())
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
