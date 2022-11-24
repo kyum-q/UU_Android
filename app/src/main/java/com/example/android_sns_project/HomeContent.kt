@@ -15,12 +15,11 @@ import com.google.firebase.storage.ktx.storage
 
 
 class HomeContent {
-    lateinit var customLayout: View
+    var customLayout: View
     val db = Firebase.firestore
     val rootRef = Firebase.storage.reference
     var id:String = ""
-    var userID:String = "kyun_q"
-    var emailInfo:String = "kyun_q"
+    var emailInfo:String = ""
     var likeClick: Boolean = false
     private var commentButton: ImageButton
     private var likeButton: ImageButton
@@ -61,7 +60,7 @@ class HomeContent {
         val likeMd = db.collection("content").document(id).collection("likes")
         likeMd.get().addOnSuccessListener {
             for (like in it)
-                if(like.id == userID) {
+                if(like.id == emailInfo) {
                     likeButton.setImageResource(R.drawable.heart_click_icon)
                     likeClick = true
                 }
@@ -138,11 +137,11 @@ class HomeContent {
             likeMd.get().addOnSuccessListener {
             if(changeCount>0) {
                 var userMap = hashMapOf(
-                    "likeUid" to userID
+                    "likeUid" to emailInfo
                 )
-                likeMd.document(userID).set(userMap)
+                likeMd.document(emailInfo).set(userMap)
             }
-            else likeMd.document(userID).delete()
+            else likeMd.document(emailInfo).delete()
             }
             likeMd.get().addOnFailureListener {
 

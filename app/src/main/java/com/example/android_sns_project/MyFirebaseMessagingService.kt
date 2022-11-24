@@ -27,7 +27,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
         }
         System.out.println("##################################### MESSAGE")
-
     }
 
     // 앱을 식별하기 위한 ID -> 새 토큰이 만들어지면 호출 됌

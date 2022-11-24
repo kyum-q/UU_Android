@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -14,12 +13,15 @@ class HomeComment {
     val db = Firebase.firestore
     val rootRef = Firebase.storage.reference
     lateinit var customLayout: View
+    var emailInfo : String = ""
     @SuppressLint("SetTextI18n", "InflateParams")
     constructor(context: Context?, AddCommentID:String, AddCommentText:String)  {
 
         //추가할 커스텀 레이아웃 가져오기
         val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         customLayout = layoutInflater.inflate(R.layout.comment, null)
+
+        emailInfo = AddCommentID
 
         val userInfo = db.collection("UserInfo").document(AddCommentID)
 
@@ -36,6 +38,9 @@ class HomeComment {
 
     public fun getLayout(): View {
         return customLayout
+    }
+    public fun getEmail() : String {
+        return emailInfo
     }
 
 }

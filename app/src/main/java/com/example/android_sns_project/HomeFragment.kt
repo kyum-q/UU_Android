@@ -37,11 +37,11 @@ class HomeFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         //auth?.currentUser?.email
         val myEmail = auth?.currentUser?.email.toString()
-        var follwings: HashMap<String, Boolean>
+        var follwings: MutableMap<String, Boolean> = HashMap()
         var myNickname = ""
         val userInfo = db.collection("UserInfo").document(myEmail)
         userInfo.get().addOnSuccessListener {
-            follwings = it["followings"] as HashMap<String, Boolean>
+            follwings = it["followings"] as MutableMap<String, Boolean>
             myNickname = it["nickname"].toString()
         }
 
@@ -79,9 +79,8 @@ class HomeFragment : Fragment() {
 
                 // like 클릭시 알림 띄우기 (좋아요 true 일때만)
                 content.getLikeButton().setOnClickListener {
-                    if(!content.isLikeClick()) {
-                        //showNotification("kyum_q")  // 알림 시작
-                        FcmPush.instance.sendMessage(content.getEmail(), myNickname+"님이 당신의 게시물을 좋아합니다","♥", myNickname)
+                    if(!content.isLikeClick() && !content.getEmail().equals(auth?.currentUser?.email)) {
+                        FcmPush.instance.sendMessage(content.getEmail(), "님이 당신의 게시물을 좋아합니다","♥", myNickname)
                     }
                     content.setLike()
                 }
@@ -90,15 +89,11 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-
         return binding?.root
-
-
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         mainActivity = context as MainActivity
     }
 

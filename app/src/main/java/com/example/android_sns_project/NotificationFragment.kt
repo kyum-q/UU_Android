@@ -43,6 +43,8 @@ class NotificationFragment : Fragment() {
                 title.text = d["title"].toString()
                 val body: TextView = customLayout.findViewById<TextView>(R.id.body)
                 body.text = d["message"].toString()
+                val nickName: TextView = customLayout.findViewById<TextView>(R.id.nickName)
+                nickName.text = d["nickName"].toString()
 
                 binding?.notificationLayout?.addView(customLayout)
             }

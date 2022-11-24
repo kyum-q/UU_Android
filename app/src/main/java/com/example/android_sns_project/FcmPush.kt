@@ -44,17 +44,14 @@ class FcmPush {
             var pushDTO = PushDTO()
             pushDTO.to = token
             pushDTO.notification.title = title
-            pushDTO.notification.body = message
-
-            // firebase 데이터 삽입
-            val uid = auth?.currentUser?.email.toString()
+            pushDTO.notification.body = nickName+message
 
             var messagingMap = hashMapOf(
                     "title" to title,
                     "message" to message,
                     "nickName" to nickName
                 )
-                FirebaseFirestore.getInstance().collection("notifications").document(uid)
+                FirebaseFirestore.getInstance().collection("notifications").document(destinationUid)
                     .collection("messaging").document().set(messagingMap)
 
 
@@ -75,9 +72,6 @@ class FcmPush {
                 override fun onResponse(call: Call, response: Response) {
                     println(response.body.toString())
                     println("$$$$$$$$ success")
-
-
-
                 }
             })
         }
