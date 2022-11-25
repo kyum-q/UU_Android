@@ -166,6 +166,7 @@ class FollowerFragment : Fragment() {
                             userInfo2?.followings!!.remove(item.email)
                             holder.binding.accountBtnFollow.text = "팔로우"
 
+
                         } else {
                             userInfo2?.followingCount = userInfo2?.followingCount!! + 1
                             Log.d("follow", "follow(email) ${auth?.currentUser?.email}")

@@ -73,8 +73,6 @@ class CommentFragment : Fragment() {
                 FcmPush.instance.sendMessage(userID, "님이 당신의 게시물에 댓글을 달았습니다", commentText, nickname)
         }
 
-
         return binding?.root
-
     }
 }

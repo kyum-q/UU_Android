@@ -83,6 +83,10 @@ class OtherUserFragment : Fragment() {
         //팔로우 버튼 이벤트
         binding!!.accountBtnFollow.setOnClickListener {
             follow()
+            //if(!userId.equals(auth?.currentUser?.email))
+                FcmPush.instance.sendMessage(userId!!, "님이 회원님을 팔로우했습니다","@@",
+                    binding!!.nickName.text as String
+                )
         }
         //팔로잉 목록 이벤트
         binding!!.followingLinear.setOnClickListener {

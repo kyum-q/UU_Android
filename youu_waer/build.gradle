@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.myapplication'
+    namespace 'com.example.youu_waer'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.myapplication"
+        applicationId "com.example.youu_waer"
         minSdk 26
         targetSdk 32
         versionCode 1
@@ -28,14 +28,11 @@ android {
 }
 
 dependencies {
-
+    implementation 'androidx.core:core:1.2.0'
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+    implementation 'com.google.android.gms:play-services-wearable:18.0.0'
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.wear:wear:1.2.0'
-
-//    implementation 'com.google.android.support:wearable:2.5.0'
-    compileOnly 'com.google.android.wearable:wearable:2.5.0'
 }
