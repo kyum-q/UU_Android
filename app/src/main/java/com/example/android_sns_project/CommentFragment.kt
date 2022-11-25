@@ -69,7 +69,7 @@ class CommentFragment : Fragment() {
             var comment: HomeComment = HomeComment(context, auth?.currentUser?.email.toString(),commentText)
             binding?.commentLayout?.addView(comment.getLayout())
             binding?.editText?.setText(" ")
-            if(!comment.getEmail().equals(auth?.currentUser?.email))
+            if(!userID.equals(auth?.currentUser?.email))
                 FcmPush.instance.sendMessage(userID, "님이 당신의 게시물에 댓글을 달았습니다", commentText, nickname)
         }
 
