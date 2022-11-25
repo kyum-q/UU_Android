@@ -69,7 +69,7 @@ class OtherUserFragment : Fragment() {
         binding!!.recyclerView.adapter = adapter
 
         //로그인한 유저의 닉네임 받아오기
-        db.collection("UserInof")?.document(auth?.currentUser?.email!!)
+        db.collection("UserInfo")?.document(auth?.currentUser?.email!!)
             ?.addSnapshotListener{ snapshot, error ->
                 userInfo = snapshot?.toObject(UserInfo::class.java)
                 curruntNickname = userInfo?.nickname
@@ -93,10 +93,10 @@ class OtherUserFragment : Fragment() {
         //팔로우 버튼 이벤트
         binding!!.accountBtnFollow.setOnClickListener {
             follow()
-            //if(!userId.equals(auth?.currentUser?.email))
-                FcmPush.instance.sendMessage(userId!!, "님이 회원님을 팔로우했습니다","@@",
-                    binding!!.nickName.text as String
-                )
+
+            if(!userId.equals(auth?.currentUser?.email))
+                FcmPush.instance.sendMessage(userId!!, "님이 회원님을 팔로우했습니다","",
+                    curruntNickname.toString())
         }
         //팔로잉 목록 이벤트
         binding!!.followingLinear.setOnClickListener {

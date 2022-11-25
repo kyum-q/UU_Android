@@ -38,7 +38,7 @@ class FollowerFragment : Fragment() {
     private var adapter: FollowerFragment.userFollowerAdapter? = null
     private val itemsCollectionRef = db.collection("content")
     private var binding: FragmentFollowerBinding? = null
-
+    var curruntNickname : String? = null
     var auth: FirebaseAuth? = null
     var currentEmail: String? = null
 
@@ -154,6 +154,12 @@ class FollowerFragment : Fragment() {
                     holder.binding.accountBtnFollow.text = "팔로우"
                 }
             }
+            //로그인한 유저의 닉네임 받아오기
+            db.collection("UserInfo")?.document(auth?.currentUser?.email!!)
+                ?.addSnapshotListener{ snapshot, error ->
+                    var userInfo1 = snapshot?.toObject(UserInfo::class.java)
+                    curruntNickname = userInfo1?.nickname
+                }
 
             holder.binding.accountBtnFollow.setOnClickListener {
                 db.collection("UserInfo").document(userInfo?.email.toString())
@@ -166,12 +172,15 @@ class FollowerFragment : Fragment() {
                             userInfo2?.followings!!.remove(item.email)
                             holder.binding.accountBtnFollow.text = "팔로우"
 
-
                         } else {
                             userInfo2?.followingCount = userInfo2?.followingCount!! + 1
                             Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
                             userInfo2?.followings!![item.email.toString()] = true
                             holder.binding.accountBtnFollow.text = "언팔로우"
+
+                            if(!item.email.equals(auth?.currentUser?.email))
+                                FcmPush.instance.sendMessage(item.email!!, "님이 회원님을 팔로우했습니다","",
+                                    curruntNickname.toString())
                         }
                         userInfo = userInfo2
                         db.collection("UserInfo").document(userInfo?.email.toString()).set(userInfo!!)

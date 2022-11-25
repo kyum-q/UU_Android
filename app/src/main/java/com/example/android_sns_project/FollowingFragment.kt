@@ -41,6 +41,7 @@ class FollowingFragment : Fragment() {
 
     var auth: FirebaseAuth? = null
     var currentEmail: String? = null
+    var curruntNickname : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,6 +127,8 @@ class FollowingFragment : Fragment() {
             return MyViewHolder(binding)
         }
 
+
+
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             Log.d("followList",followingList[position].email.toString() )
             val item = followingList[position]
@@ -141,6 +144,14 @@ class FollowingFragment : Fragment() {
             if(item.email == auth?.currentUser?.email){
                 holder.binding.accountBtnFollow.setVisibility(View.INVISIBLE)
             }
+
+            //로그인한 유저의 닉네임 받아오기
+            db.collection("UserInfo")?.document(auth?.currentUser?.email!!)
+                ?.addSnapshotListener{ snapshot, error ->
+                    var userInfo1 = snapshot?.toObject(UserInfo::class.java)
+                    curruntNickname = userInfo1?.nickname
+                }
+
             //본인이 팔로우한 유저라면 button에 following 표시
             db.collection("UserInfo").document(auth?.currentUser?.email!!)
                 .addSnapshotListener { snapshot, error ->
@@ -169,6 +180,10 @@ class FollowingFragment : Fragment() {
                             Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
                             userInfo2?.followings!![item.email.toString()] = true
                             holder.binding.accountBtnFollow.text = "언팔로우"
+
+                            if(!item.email.equals(auth?.currentUser?.email))
+                                FcmPush.instance.sendMessage(item.email!!, "님이 회원님을 팔로우했습니다","",
+                                    curruntNickname.toString())
                         }
                         userInfo = userInfo2
                         db.collection("UserInfo").document(userInfo?.email.toString()).set(userInfo!!)
