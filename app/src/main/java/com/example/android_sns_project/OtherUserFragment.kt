@@ -48,6 +48,8 @@ class OtherUserFragment : Fragment() {
     var userInfo : UserInfo? = null
     var userId : String?= null
 
+    var curruntNickname : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -66,6 +68,13 @@ class OtherUserFragment : Fragment() {
         adapter = UserFragmentAdapter()
         binding!!.recyclerView.adapter = adapter
 
+        //로그인한 유저의 닉네임 받아오기
+        db.collection("UserInof")?.document(auth?.currentUser?.email!!)
+            ?.addSnapshotListener{ snapshot, error ->
+                userInfo = snapshot?.toObject(UserInfo::class.java)
+                curruntNickname = userInfo?.nickname
+            }
+
         db.collection("UserInfo")?.document(userId!!)
             ?.addSnapshotListener { snapshot, error ->
                 // var items = mutableListOf<Item>()
@@ -75,6 +84,7 @@ class OtherUserFragment : Fragment() {
                 //      CoroutineScope(Dispatchers.Main).launch {
 
                 userInfo = snapshot.toObject(UserInfo::class.java)
+
                 binding!!.followerCount.text = userInfo?.followerCount.toString()
                 binding!!.followingCount.text = userInfo?.followingCount.toString()
                 binding!!.nickName.text = userInfo?.nickname.toString()
