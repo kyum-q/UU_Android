@@ -159,8 +159,6 @@ class PostingActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-
     }
     //사진뷰 다시누르면 갤러리로 다시 가서 선택
     fun photoSelect(){
