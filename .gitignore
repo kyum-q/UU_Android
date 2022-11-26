@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+myapplication/build/generated/data_binding_base_class_source_out/debug/out/com/example/myapplication/databinding/ActivityMainBinding.java
