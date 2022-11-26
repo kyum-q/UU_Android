@@ -90,6 +90,13 @@ class OtherUserFragment : Fragment() {
                 binding!!.nickName.text = userInfo?.nickname.toString()
 
             }
+        //게시물 수
+        db.collection("content")?.whereEqualTo("userId",userId)
+            ?.addSnapshotListener { snapshot, error ->
+                if (snapshot == null) return@addSnapshotListener
+                binding!!.contentCount.text = snapshot.documents.size.toString()
+
+            }
         //팔로우 버튼 이벤트
         binding!!.accountBtnFollow.setOnClickListener {
             follow()

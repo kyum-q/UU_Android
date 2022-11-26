@@ -14,18 +14,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
 
-            <TextView
-                android:id="@+id/tvNickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Search"
-                android:textColor="@color/white" />
-        </Toolbar>
+        <EditText
+            android:id="@+id/etSearch"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/cursor"
+            android:drawableLeft="@drawable/ic_baseline_search_24"
+            android:drawablePadding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:hint="@string/search"
+            android:textColor="@color/white"
+            android:background="@null"
+            android:textColorLink="@color/light_main_color"
+            android:textSize="16sp" />
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

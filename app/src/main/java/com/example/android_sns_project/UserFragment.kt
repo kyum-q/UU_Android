@@ -53,6 +53,7 @@ class UserFragment : Fragment() {
     var roofRef2 = Firebase.database.reference
     var userInfo: UserInfo? = null
     var userId: String? = null
+    var contentSize : Int?= 0
 
     //실시간 변경 데이터 추적
     private var snapshotListener: ListenerRegistration? = null
@@ -89,6 +90,13 @@ class UserFragment : Fragment() {
                     binding!!.followingCount.text = userInfo?.followingCount.toString()
                     binding!!.nickName.text = userInfo?.nickname.toString()
                 }
+            }
+        //게시물 수
+        db.collection("content")?.whereEqualTo("userId", auth?.currentUser?.email)
+            ?.addSnapshotListener { snapshot, error ->
+                if (snapshot == null) return@addSnapshotListener
+                binding!!.contentCount.text = snapshot.documents.size.toString()
+
             }
 
         //프로필 사진 바꾸는 이벤트
@@ -192,6 +200,7 @@ class UserFragment : Fragment() {
             if (contents.isEmpty()) return
             var imageView = (holder as MyViewHolder).imageView
             Log.d("TAG", "onBindViewHolder ${contents.size}")
+
             //  for (content in contents) {
             val ref = rootRef.child(contents[position].imagePath.toString())
 
