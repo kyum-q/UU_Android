@@ -94,9 +94,7 @@ class OtherUserFragment : Fragment() {
         binding!!.accountBtnFollow.setOnClickListener {
             follow()
 
-            if(!userId.equals(auth?.currentUser?.email))
-                FcmPush.instance.sendMessage(userId!!, "님이 회원님을 팔로우했습니다","",
-                    curruntNickname.toString())
+
         }
         //팔로잉 목록 이벤트
         binding!!.followingLinear.setOnClickListener {
@@ -149,6 +147,10 @@ class OtherUserFragment : Fragment() {
                 current_user?.followingCount = current_user?.followingCount!! + 1
                 Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
                 current_user?.followings!![userId!!] = true
+
+                if(!userId.equals(auth?.currentUser?.email))
+                    FcmPush.instance.sendMessage(userId!!, "님이 회원님을 팔로우했습니다","",
+                        curruntNickname.toString())
             }
             current_user_db.set(current_user)
         }
@@ -168,10 +170,12 @@ class OtherUserFragment : Fragment() {
                 //해당 유저를 팔로우 했다면 언팔로우 버튼으로
                 if(user.followers.containsKey(auth?.currentUser?.email)){
 
+
                     binding!!.accountBtnFollow.text = "언팔로우"
                     //binding!!.accountBtnFollow.setBackgroundColor(context.resources.getColor(R.id.))
                     binding!!.accountBtnFollow.width = 130
                 }else{
+
                     binding!!.accountBtnFollow.text = "팔로우"
                     binding!!.accountBtnFollow.width = 100
                 }
