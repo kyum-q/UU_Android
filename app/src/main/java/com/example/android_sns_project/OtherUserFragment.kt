@@ -100,10 +100,6 @@ class OtherUserFragment : Fragment() {
         //팔로우 버튼 이벤트
         binding!!.accountBtnFollow.setOnClickListener {
             follow()
-
-            if(!userId.equals(auth?.currentUser?.email))
-                FcmPush.instance.sendMessage(userId!!, "님이 회원님을 팔로우했습니다","",
-                    curruntNickname.toString())
         }
         //팔로잉 목록 이벤트
         binding!!.followingLinear.setOnClickListener {
@@ -141,6 +137,10 @@ class OtherUserFragment : Fragment() {
                     Log.d("follow", "follow(email) ${auth?.currentUser?.email}")
                     user?.followers!![auth?.currentUser?.email!!] = true
                     Log.d("follow", "++() ${user}")
+
+                    if(!userId.equals(auth?.currentUser?.email))
+                        FcmPush.instance.sendMessage(userId!!, "님이 회원님을 팔로우했습니다","",
+                            curruntNickname.toString())
                 }
             user_db.set(user)
         }
