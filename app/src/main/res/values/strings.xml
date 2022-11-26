@@ -1,5 +1,20 @@
 <resources>
-    <string name="app_name">android-sns-project</string>
+    <string name="app_name">YouU</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="home">home</string>
+    <string name="notification">notification</string>
+    <string name="user">user</string>
+    <string name="AppName">YouU</string>
+    <string name="posting">posting</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="password_check">비밀번호 확인</string>
+    <string name="name">성명</string>
+    <string name="nickname">닉네임</string>
+    <string name="sign_in">로그인</string>
+    <string name="sign_up">가입하기</string>
+    <string name="signin_google">Google로 로그인하기</string>
+    <string name="signup_google">Google로 가입하기</string>
 </resources>

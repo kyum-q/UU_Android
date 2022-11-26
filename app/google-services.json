@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "214643894056",
+    "firebase_url": "https://android-sns-youu-default-rtdb.firebaseio.com",
     "project_id": "android-sns-youu",
     "storage_bucket": "android-sns-youu.appspot.com"
   },

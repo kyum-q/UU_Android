@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "android-sns-project"
 include ':app'
+include ':myapplication'
+include ':youu_waer'

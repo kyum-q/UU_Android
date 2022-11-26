@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity">
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal|bottom"
+        android:fontFamily="@font/abril_fatface"
+        android:text="@string/AppName"
+        android:textColor="@color/main_color"
+        android:textSize="50dp"
+        tools:ignore="TextContrastCheck"
+        tools:layout_editor_absoluteX="182dp"
+
+        tools:layout_editor_absoluteY="14dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="30dp"
+        android:layout_above="@+id/notice" />
+
+    <TextView
+        android:id="@+id/notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="15dp"
+        android:text="친구들의 사진과 동영상을 보려면 가입하세요."
+        android:textColor="@color/grey_text"
+        android:textSize="17dp"
+        android:layout_above="@+id/signup_layout"/>
+
+    <LinearLayout
+        android:id="@+id/signup_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:text="@string/signup_google"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="15dp"-->
+<!--            android:background="@drawable/btn_signin_google"-->
+<!--            android:drawablePadding="5dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginLeft="40dp"-->
+<!--            android:layout_marginRight="40dp"-->
+<!--            android:layout_marginBottom="30dp" />-->
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:background="@drawable/border_edittext"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/email"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:background="@drawable/border_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/name"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:id="@+id/NicknameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/border_edittext"
+            android:hint="@string/nickname"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:background="@drawable/border_edittext"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/password"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:id="@+id/passwordCheckEditText"
+            android:background="@drawable/border_edittext"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/password_check"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/signinErrorText"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text=""
+            android:textColor="@color/error_color"
+            android:textSize="12dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/signUpBtutton"
+            android:text="@string/sign_up"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:background="@drawable/border_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="150dp"/>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/comment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/account_profile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="0.5"
+                android:src="@drawable/profile"
+                app:civ_border_color="@color/profile_border"
+                app:civ_border_overlay="true"
+                app:civ_border_width="3dp"
+                tools:ignore="MissingClass" />
+
+            <TextView
+                android:id="@+id/nickName"
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="4.5"
+                android:text="TextView"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/account_btn_follow"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="2.5"
+                android:text="FOLLOW"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

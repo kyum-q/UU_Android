@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.android_sns_project.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_commentFragment"
+            app:destination="@id/commentFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.android_sns_project.SearchFragment"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.android_sns_project.UserFragment"
+        tools:layout="@layout/fragment_user">
+        <action
+            android:id="@+id/action_userFragment_to_myContentFragment"
+            app:destination="@id/myContentFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_followingFragment"
+            app:destination="@id/followingFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_followerFragment"
+            app:destination="@id/followerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.android_sns_project.NotificationFragment"
+        tools:layout="@layout/fragment_notification" />
+
+    <!--    <fragment-->
+<!--        android:id="@+id/postingFragment"-->
+<!--        android:name="com.example.android_sns_project.PostingFragment"-->
+<!--        android:label="fragment_posting"-->
+<!--        tools:layout="@layout/fragment_posting" />-->
+    <activity
+        android:id="@+id/postingActivity"
+        android:name="com.example.android_sns_project.PostingActivity"
+        tools:layout="@layout/activity_post" />
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="com.example.android_sns_project.CommentFragment"
+        tools:layout="@layout/fragment_comment" />
+    <fragment
+        android:id="@+id/myContentFragment"
+        android:name="com.example.android_sns_project.MyContentFragment"
+        tools:layout="@layout/fragment_my_content">
+        <action
+            android:id="@+id/action_myContentFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherUserFragment"
+        android:name="com.example.android_sns_project.OtherUserFragment"
+        tools:layout="@layout/fragment_other_user" >
+        <action
+            android:id="@+id/action_otherUserFragment_to_myContentFragment"
+            app:destination="@id/myContentFragment" />
+        <action
+            android:id="@+id/action_otherUserFragment_to_followingFragment"
+            app:destination="@id/followingFragment" />
+        <action
+            android:id="@+id/action_otherUserFragment_to_followerFragment"
+            app:destination="@id/followerFragment" />
+        <action
+            android:id="@+id/action_otherUserFragment_to_followerFragment2"
+            app:destination="@id/followerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/followingFragment"
+        android:name="com.example.android_sns_project.FollowingFragment"
+        tools:layout="@layout/fragment_following" >
+        <action
+            android:id="@+id/action_followingFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/followerFragment"
+        android:name="com.example.android_sns_project.FollowerFragment"
+        tools:layout="@layout/fragment_follower">
+        <action
+            android:id="@+id/action_followerFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment" />
+    </fragment>
+
+</navigation>
