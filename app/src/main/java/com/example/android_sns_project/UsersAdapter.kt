@@ -47,6 +47,11 @@ class UsersAdapter(clickListener: ClickListener): RecyclerView.Adapter<UsersAdap
         return userModelList.size
     }
 
+    public fun filterList(filteredList : ArrayList<UserModel> ){
+        userModelList = filteredList
+        notifyDataSetChanged()
+    }
+
     interface ClickListener{
         fun clickedNickname(usermodel: UserModel)
     }
