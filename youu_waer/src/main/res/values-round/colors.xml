@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="main_color" tools:ignore="MissingDefaultResource">#AD90FF</color>
+    <color name="light_main_color" tools:ignore="MissingDefaultResource">#CEBCFF</color>
+    <color name="google_color" tools:ignore="MissingDefaultResource">#EA4335</color>
+    <color name="error_color" tools:ignore="MissingDefaultResource">#FF0000</color>
+    <color name="grey_text" tools:ignore="MissingDefaultResource">#737373</color>
+    <color name="division_line" tools:ignore="MissingDefaultResource">#ADC5C5C5</color>
+    <color name="profile_border" tools:ignore="MissingDefaultResource">#D9D9D9</color>
+    <color name="dark_grey_text" tools:ignore="MissingDefaultResource">#555555</color>
+</resources>

@@ -1,3 +1,20 @@
-<resources>
-    <string name="hello_world">Hello Round World!</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">YouU</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" tools:ignore="ExtraTranslation">Hello blank fragment</string>
+    <string name="search" tools:ignore="ExtraTranslation">Search</string>
+    <string name="home" tools:ignore="ExtraTranslation">home</string>
+    <string name="notification" tools:ignore="ExtraTranslation">notification</string>
+    <string name="user" tools:ignore="ExtraTranslation">user</string>
+    <string name="AppName" tools:ignore="ExtraTranslation">YouU</string>
+    <string name="posting" tools:ignore="ExtraTranslation">posting</string>
+    <string name="email" tools:ignore="ExtraTranslation">이메일</string>
+    <string name="password" tools:ignore="ExtraTranslation">비밀번호</string>
+    <string name="password_check" tools:ignore="ExtraTranslation">비밀번호 확인</string>
+    <string name="name" tools:ignore="ExtraTranslation">성명</string>
+    <string name="nickname" tools:ignore="ExtraTranslation">닉네임</string>
+    <string name="sign_in" tools:ignore="ExtraTranslation">로그인</string>
+    <string name="sign_up" tools:ignore="ExtraTranslation">가입하기</string>
+    <string name="signin_google" tools:ignore="ExtraTranslation">Google로 로그인하기</string>
+    <string name="signup_google" tools:ignore="ExtraTranslation">Google로 가입하기</string>
 </resources>

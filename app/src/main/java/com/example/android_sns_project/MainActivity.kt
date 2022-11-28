@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.homeFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
             R.id.searchFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
-//            R.id.postingFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
+//          R.id.postingFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
             R.id.postingActivity -> startActivity(Intent(this, PostingActivity::class.java))
             R.id.notificationFragment -> item.onNavDestinationSelected(findNavController(R.id.fragment))
             R.id.userFragment -> {
