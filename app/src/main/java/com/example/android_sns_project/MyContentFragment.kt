@@ -43,27 +43,9 @@ class MyContentFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putString("id", context.getID())
                 findNavController().navigate(
-                    com.example.android_sns_project.R.id.action_homeFragment_to_commentFragment,
+                    com.example.android_sns_project.R.id.action_myContentFragment_to_commentFragment,
                     bundle
                 )
-            }
-
-            // 유저 사진 클릭시 유저 frament로 이동
-            context.getUserImage().setOnClickListener {
-
-                val bundle = Bundle()
-                bundle.putString("email", context.getEmail())
-                if (context.getEmail().equals(auth?.currentUser?.email)) {
-                    findNavController().navigate(
-                        com.example.android_sns_project.R.id.action_homeFragment_to_userFragment,
-                        bundle
-                    )
-                } else {
-                    findNavController().navigate(
-                        com.example.android_sns_project.R.id.action_homeFragment_to_otherUserFragment,
-                        bundle
-                    )
-                }
             }
 
             // like 클릭시 알림 띄우기 (좋아요 true 일때만)
