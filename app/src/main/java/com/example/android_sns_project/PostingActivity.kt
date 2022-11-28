@@ -125,10 +125,10 @@ class PostingActivity : AppCompatActivity() {
             // 디바이스 가로 비율에 맞춘 세로 크기
             //val scaleHeight = deviceWidth * width/ height
 
-            if(width > height)
-                resizeBitmap = Bitmap.createBitmap(bitmap!!,bitmap.height/4, 0, bitmap.height, bitmap.height)
-            else
-                resizeBitmap = Bitmap.createBitmap(bitmap!!,0, bitmap.width/4 , bitmap.width, bitmap.width)
+//            if(width > height)
+//                resizeBitmap = Bitmap.createBitmap(bitmap!!,bitmap.height/4, 0, bitmap.height, bitmap.height)
+//            else
+//                resizeBitmap = Bitmap.createBitmap(bitmap!!,0, bitmap.width/4 , bitmap.width, bitmap.width)
             // 비트 맵의 가로 세로 비율 조정
            // resizeBitmap = Bitmap.createScaledBitmap(bitmap!!, width, scaleHeight, true)
 
