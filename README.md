@@ -44,3 +44,7 @@
 ![Group 43](https://user-images.githubusercontent.com/109158497/236520646-fcc29313-2503-4523-b262-f152c5baec6c.png)
 ![Group 41](https://user-images.githubusercontent.com/109158497/236520293-099d0e3e-7c32-4a7a-b39a-a141dfb17ca7.png)
 ![Group 42](https://user-images.githubusercontent.com/109158497/236520257-0a76012f-4bfe-4623-9ad9-6f3113d87161.png)
+
+
+## 🔍&nbsp; 개발 언어
+<img src="https://img.shields.io/badge/kotlin-FF7800?style=for-the-badge&logo=Kotlin&logoColor=white"> <img src="https://img.shields.io/badge/android-3DDC84?style=for-the-badge&logo=Android&logoColor=white">
